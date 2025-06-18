@@ -1,10 +1,11 @@
-﻿namespace PokemonBattleSimulator
+﻿namespace PokemonBattleSimulator;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            // TODO: Implement main logic for the Pokemon Battle Simulator.
-        }
+        // TODO: Implement main logic for the Pokemon Battle Simulator.
+        var mainController = new MainController();
+        mainController.Run();
     }
 }
