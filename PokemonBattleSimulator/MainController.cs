@@ -6,7 +6,7 @@ internal class MainController : IController
 {
     private static readonly string _consolePrefix = "MainMenu> ";
     private readonly IConsoleWriter _console = new ConsoleWriter(_consolePrefix);
-    public void Run()
+    public void Run(User user)
     {
         _console.WriteLine("Welcome to the Pokemon Battle Simulator!");
         _console.WriteLine("Type 'build' to create a Pokemon team, 'battle' to start a battle, or 'exit' to quit the application.");
@@ -19,11 +19,11 @@ internal class MainController : IController
             {
                 case "build":
                     var buildController = new BuildController();
-                    buildController.Run();
+                    buildController.Run(user);
                     break;
                 case "battle":
                     var battleController = new BattleController();
-                    battleController.Run();
+                    battleController.Run(user);
                     break;
                 case "exit":
                     _console.WriteLine("Exiting the application. Goodbye!");

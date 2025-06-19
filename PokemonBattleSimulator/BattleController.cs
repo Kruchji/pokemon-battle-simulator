@@ -6,7 +6,7 @@ internal class BattleController : IController
 {
     private static readonly string _consolePrefix = "BattleMenu> ";
     private readonly IConsoleWriter _console = new ConsoleWriter(_consolePrefix);
-    public void Run()
+    public void Run(User user)
     {
         _console.WriteLine("Welcome to the Battle Menu!");
         _console.WriteLine("Here you can start a battle with your Pokemon teams.");
@@ -16,13 +16,21 @@ internal class BattleController : IController
         {
             _console.Write("");
             var userInput = Console.ReadLine()?.Trim().ToLower();
-            if (userInput == "back")
+
+            switch (userInput)
             {
-                break;
-            }
-            else
-            {
-                _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.");
+                case "back":
+                    return;
+                case "print":
+                    _console.WriteLine("Printing all user Pokemon...");
+                    foreach (var pokemon in user.PokemonList)
+                    {
+                        _console.WriteLine(pokemon.ToString());
+                    }
+                    break;
+                default:
+                    _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.");
+                    break;
             }
         }
     }

@@ -4,5 +4,5 @@ namespace PokemonBattleSimulator;
 
 internal interface IController
 {
-    void Run();
+    void Run(User user);
 }
