@@ -14,6 +14,9 @@ internal record Pokemon
     public int SpecialAttack { get; private set; }
     public int Defense { get; private set; }
     public int SpecialDefense { get; private set; }
+
+    public static readonly int NumberOfMoves = 4;
+    public Move[] Moves { get; private set; } = new Move[NumberOfMoves];
     public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, PokemonType firstType, PokemonType? secondType = null)
     {
         Name = name;
@@ -26,5 +29,18 @@ internal record Pokemon
         SpecialDefense = specialDefense;
         FirstType = firstType;
         SecondType = secondType;
+    }
+
+    public void SetMove(int index, Move move)
+    {
+        if (index < 0 || index >= NumberOfMoves)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and 3.");
+        }
+        if (move == null)
+        {
+            throw new ArgumentNullException(nameof(move), "Move cannot be null.");
+        }
+        Moves[index] = move;
     }
 }

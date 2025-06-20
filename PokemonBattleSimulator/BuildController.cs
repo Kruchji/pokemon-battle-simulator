@@ -27,6 +27,11 @@ internal class BuildController : IController
                     var examplePokemon = new Pokemon("Pikachu", 10, 10, 10, 10, 10, 10, 10, PokemonType.Electric);
                     user.AddPokemon(examplePokemon);
                     break;
+                case "defaults":
+                    _console.WriteLine("Loading default Pokemon and Moves...");
+                    BuildManager.LoadDefaults(user);
+                    _console.WriteLine("Default Pokemon and Moves loaded successfully.");
+                    break;
                 default:
                     _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.");
                     break;

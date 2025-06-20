@@ -12,7 +12,7 @@ internal class PokemonTeam
     {
         Name = name ?? throw new ArgumentNullException(nameof(name), "Team name cannot be null.");
     }
-    public void AddPokemon(Pokemon pokemon, int index)
+    public void AddPokemon(int index, Pokemon pokemon)
     {
         if (index < 0 || index >= MaxTeamSize)
         {
