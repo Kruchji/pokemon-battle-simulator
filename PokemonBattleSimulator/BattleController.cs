@@ -10,7 +10,7 @@ internal class BattleController : IController
     {
         _console.WriteLine("Welcome to the Battle Menu!");
         _console.WriteLine("Here you can start a battle with your Pokemon teams.");
-        
+
         _console.WriteLine("Type 'back' to return to the main menu.");
         while (true)
         {
@@ -27,6 +27,14 @@ internal class BattleController : IController
                     {
                         _console.WriteLine(pokemon.ToString());
                     }
+                    break;
+                case "battle":
+                    _console.WriteLine("Starting a battle with your Pokemon teams...");
+
+                    // TODO: Selection logic
+                    var firstPokemon = new BattlePokemon(user.PokemonList[0], AIStrategies.RandomMove);
+                    var secondPokemon = new BattlePokemon(user.PokemonList[0], AIStrategies.BestOverallMove);
+                    Battle.SimulateBattle(firstPokemon, secondPokemon, _console);
                     break;
                 default:
                     _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.");

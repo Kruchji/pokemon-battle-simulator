@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal enum PokemonType
+public enum PokemonType
 {
     Normal,
     Fire,

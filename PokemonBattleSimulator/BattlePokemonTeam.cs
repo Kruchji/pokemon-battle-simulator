@@ -18,7 +18,7 @@ internal class BattlePokemonTeam
         {
             if (_pokemonTeam.PokemonList[i] != null)
             {
-                BattlePokemonList[i] = new BattlePokemon(_pokemonTeam.PokemonList[i]);
+                BattlePokemonList[i] = new BattlePokemon(_pokemonTeam.PokemonList[i], AIStrategies.BestOverallMove); // TODO: Replace with user selected strategy
             }
         }
     }

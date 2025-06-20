@@ -24,7 +24,7 @@ internal class BuildController : IController
                 case "add":
                     _console.WriteLine("Adding a new Pokemon to your team...");
                     // Logic to add a new Pokemon would go here
-                    var examplePokemon = new Pokemon("Pikachu", 10, 10, 10, 10, 10, 10, 10, PokemonType.Electric);
+                    var examplePokemon = new Pokemon("Pikachu", 10, 10, 10, 10, 10, 10, 10, new Move("Thunderbolt", 90, 100, 15, PokemonType.Electric, MoveCategory.Special), PokemonType.Electric);
                     user.AddPokemon(examplePokemon);
                     break;
                 case "defaults":

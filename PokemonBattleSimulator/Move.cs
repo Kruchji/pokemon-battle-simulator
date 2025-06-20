@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal record Move
+public record Move
 {
     public string Name { get; private set; }
     public int Power { get; private set; }

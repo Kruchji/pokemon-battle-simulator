@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal record Pokemon
+public record Pokemon
 {
     public string Name { get; private set; }
     public int Level { get; private set; }
@@ -16,8 +16,8 @@ internal record Pokemon
     public int SpecialDefense { get; private set; }
 
     public static readonly int NumberOfMoves = 4;
-    public Move[] Moves { get; private set; } = new Move[NumberOfMoves];
-    public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, PokemonType firstType, PokemonType? secondType = null)
+    public Move[] Moves { get; private set; } = new Move[NumberOfMoves];    // TODO: Ensure that first move is always not null
+    public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, Move firstMove, PokemonType firstType, PokemonType? secondType = null)
     {
         Name = name;
         Level = level;
@@ -29,6 +29,7 @@ internal record Pokemon
         SpecialDefense = specialDefense;
         FirstType = firstType;
         SecondType = secondType;
+        Moves[0] = firstMove ?? throw new ArgumentNullException(nameof(firstMove), "First move cannot be null.");
     }
 
     public void SetMove(int index, Move move)
@@ -37,9 +38,9 @@ internal record Pokemon
         {
             throw new ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and 3.");
         }
-        if (move == null)
+        if (move == null && index == 0)
         {
-            throw new ArgumentNullException(nameof(move), "Move cannot be null.");
+            throw new ArgumentNullException(nameof(move), "First move cannot be null.");
         }
         Moves[index] = move;
     }

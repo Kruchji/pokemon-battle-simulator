@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal enum MoveCategory
+public enum MoveCategory
 {
     Physical,
     Special,
