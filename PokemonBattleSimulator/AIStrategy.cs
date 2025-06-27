@@ -24,12 +24,12 @@ public static class AIStrategies
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
         if (opponentPokemon == null) throw new ArgumentNullException(nameof(opponentPokemon), "Opponent Pokemon cannot be null.");
 
-        // Generate a random index for the move
+        // Generate a random index for the (not null) move
         Random random = new Random();
-        int randomIndex = random.Next(0, Pokemon.NumberOfMoves);
+        int randomIndex = random.Next(0, ownPokemon.Pokemon.SetMoveIndices.Count);
 
         // Return the randomly selected move
-        return ownPokemon.Pokemon.Moves[randomIndex];
+        return ownPokemon.Pokemon.Moves[ownPokemon.Pokemon.SetMoveIndices[randomIndex]];
     }
 
     // Strategy returning a move based on type effectiveness (most effective move)

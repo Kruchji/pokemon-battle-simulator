@@ -17,6 +17,7 @@ public record Pokemon
 
     public static readonly int NumberOfMoves = 4;
     public Move[] Moves { get; private set; } = new Move[NumberOfMoves];    // TODO: Ensure that first move is always not null
+    public List<int> SetMoveIndices { get; private set; } = new List<int>();
     public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, Move firstMove, PokemonType firstType, PokemonType? secondType = null)
     {
         Name = name;
@@ -30,6 +31,8 @@ public record Pokemon
         FirstType = firstType;
         SecondType = secondType;
         Moves[0] = firstMove ?? throw new ArgumentNullException(nameof(firstMove), "First move cannot be null.");
+
+        SetMoveIndices.Add(0); // First move is always set
     }
 
     public void SetMove(int index, Move move)
@@ -42,6 +45,16 @@ public record Pokemon
         {
             throw new ArgumentNullException(nameof(move), "First move cannot be null.");
         }
+
+        if (move != null && Moves[index] == null)
+        {
+            SetMoveIndices.Add(index); // Add index to set moves if it's not already there
+        }
+        else if (move == null && Moves[index] != null)
+        {
+            SetMoveIndices.Remove(index); // Remove index from set moves if move is null
+        }
+
         Moves[index] = move;
     }
 }
