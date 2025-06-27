@@ -31,6 +31,16 @@ public class BattlePokemon
         _aiStrategy = aiStrategy ?? throw new ArgumentNullException(nameof(aiStrategy), "AI strategy cannot be null.");
     }
 
+    // Constructor from existing BattlePokemon, used for cloning
+    public BattlePokemon(BattlePokemon other)
+    {
+        if (other == null) throw new ArgumentNullException(nameof(other), "Other BattlePokemon cannot be null.");
+        Pokemon = other.Pokemon;
+        CurrentHealth = other.CurrentHealth;
+        Fainted = other.Fainted;
+        _aiStrategy = other._aiStrategy; // Use the same AI strategy
+    }
+
     public void TakeDamage(int damage)
     {
         if (damage < 0) throw new ArgumentOutOfRangeException(nameof(damage), "Damage cannot be negative.");

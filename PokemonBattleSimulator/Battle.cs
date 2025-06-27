@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PokemonBattleSimulator;
 
@@ -151,5 +153,35 @@ internal static class Battle
         {
             throw new InvalidOperationException("Both Pokemon fainted at the same time. This should not happen in a basic battle.");
         }
+    }
+
+    public static (int, int) SimulateManyBattles(BattlePokemon firstPokemon, BattlePokemon secondPokemon, int battleCount)
+    {
+        if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
+        if (secondPokemon == null) throw new ArgumentNullException(nameof(secondPokemon), "Second Pokemon cannot be null.");
+        if (battleCount <= 0) throw new ArgumentOutOfRangeException(nameof(battleCount), "Battle count must be greater than zero.");
+        int firstWins = 0;
+        int secondWins = 0;
+
+        // TODO: Make this group more battles into one task?
+
+        // Run all battles in parallel
+        Parallel.For(0, battleCount, _ =>
+        {
+            // Clone the Pokemon for each battle to reset their state
+            BattlePokemon firstClone = new BattlePokemon(firstPokemon);
+            BattlePokemon secondClone = new BattlePokemon(secondPokemon);
+            bool firstWon = SimulateBattle(firstClone, secondClone, null); // No console output
+            if (firstWon)
+            {
+                Interlocked.Increment(ref firstWins);
+            }
+            else
+            {
+                Interlocked.Increment(ref secondWins);
+            }
+        });
+
+        return (firstWins, secondWins);
     }
 }

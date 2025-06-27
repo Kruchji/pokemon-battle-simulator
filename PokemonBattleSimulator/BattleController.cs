@@ -36,6 +36,19 @@ internal class BattleController : IController
                     var secondPokemon = new BattlePokemon(user.PokemonList[0], AIStrategies.BestOverallMove);
                     Battle.SimulateBattle(firstPokemon, secondPokemon, _console);
                     break;
+                case "battlemany":
+                    int battleCount = 100; // Default number of battles
+
+                    _console.WriteLine("Starting many battles with your Pokemon...");
+
+                    // TODO: Selection logic
+                    var firstManyPokemon = new BattlePokemon(user.PokemonList[0], AIStrategies.RandomMove);
+                    var secondManyPokemon = new BattlePokemon(user.PokemonList[0], AIStrategies.BestOverallMove);
+
+                    var (firstWins, secondWins) = Battle.SimulateManyBattles(firstManyPokemon, secondManyPokemon, battleCount);
+                    _console.WriteLine($"After {battleCount} battles: {firstManyPokemon.Name} won {firstWins} times, {secondManyPokemon.Name} won {secondWins} times.");
+
+                    break;
                 default:
                     _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.");
                     break;
