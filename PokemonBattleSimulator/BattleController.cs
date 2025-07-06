@@ -50,6 +50,15 @@ internal class BattleController : IController
                     _console.WriteLine($"After {battleCount} battles: {firstManyPokemon.Name} won {firstWins} times, {secondManyPokemon.Name} won {secondWins} times.");
 
                     break;
+                case "battleteam":
+                    _console.WriteLine("Starting a team battle with your Pokemon teams...");
+
+                    // TODO: Selection logic
+                    var firstTeam = new BattlePokemonTeam(user.PokemonTeams[0], AIStrategies.RandomMove, AITeamStrategies.RandomAvailablePokemon);
+                    var secondTeam = new BattlePokemonTeam(user.PokemonTeams[0], AIStrategies.BestOverallMove, AITeamStrategies.BestOverallMovePokemon);
+
+                    Battle.SimulateTeamBattle(firstTeam, secondTeam, _console);
+                    break;
                 default:
                     _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.\n");
                     break;

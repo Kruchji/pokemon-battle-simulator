@@ -28,8 +28,8 @@ public class BattlePokemon
     public BattleMove[] BattleMoves { get; private set; } = new BattleMove[Pokemon.NumberOfMoves];
 
     // Move to use if all other moves have no PP left
-    public static Move FallbackMove = new Move("Struggle", 50, 100, 1, PokemonType.Normal, MoveCategory.Physical);
-
+    public static BattleMove FallbackMove = new BattleMove(new Move("Struggle", 50, 100, int.MaxValue, PokemonType.Normal, MoveCategory.Physical));
+    // TODO: Maybe create class for Fallback/ struggle move so that it has infinite PP
     public BattlePokemon(Pokemon pokemon, AIStrategy aiStrategy)
     {
         this.Pokemon = pokemon ?? throw new ArgumentNullException(nameof(pokemon), "Pokemon cannot be null.");
@@ -73,7 +73,7 @@ public class BattlePokemon
         }
     }
 
-    public Move GetNextMove(BattlePokemon opponent)
+    public BattleMove GetNextMove(BattlePokemon opponent)
     {
         if (opponent == null) throw new ArgumentNullException(nameof(opponent), "Opponent cannot be null.");
 
@@ -86,8 +86,6 @@ public class BattlePokemon
         // Use the AI strategy to determine the next move
         var selectedMove = _aiStrategy(this, opponent);
 
-        selectedMove.UseMove(); // Decrease PP for the selected move
-
-        return selectedMove.Move;
+        return selectedMove;
     }
 }

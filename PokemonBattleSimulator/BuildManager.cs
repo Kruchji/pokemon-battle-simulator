@@ -281,8 +281,7 @@ internal static class BuildManager
 
         bulbasaur.SetMove(1, vineWhip);
 
-        var starterTeam = new PokemonTeam("Starter Team");
-        starterTeam.AddPokemon(0, pikachu);
+        var starterTeam = new PokemonTeam("Starter Team", pikachu);
         starterTeam.AddPokemon(1, charmander);
         starterTeam.AddPokemon(2, bulbasaur);
 

@@ -14,7 +14,7 @@ public static class AIStrategies
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
         if (opponentPokemon == null) throw new ArgumentNullException(nameof(opponentPokemon), "Opponent Pokemon cannot be null.");
-        // Return the first (not null, with pp) move of the own Pokemon
+        // Return the first (not null, with pp) move of own Pokemon
         foreach (var battleMove in ownPokemon.BattleMoves)
         {
             if (battleMove.Move != null && battleMove.CurrentPP > 0) // Ensure the move is not null and has PP left
@@ -33,18 +33,15 @@ public static class AIStrategies
 
         // Generate a random index for the (not null) move
         Random random = new Random();
+        var availableMoves = ownPokemon.BattleMoves.Where(battleMove => battleMove.Move != null && battleMove.CurrentPP > 0).ToList();
 
-        while (true)
+        if (availableMoves.Count == 0)
         {
-            int randomIndex = random.Next(0, Pokemon.NumberOfMoves);
-            var battleMove = ownPokemon.BattleMoves[randomIndex];
-
-            if (battleMove.Move != null && battleMove.CurrentPP > 0) // Ensure the move is not null and has PP left
-            {
-                // If the randomly selected move is valid, return it
-                return battleMove;
-            }
+            throw new InvalidOperationException("No valid moves available for this Pokemon."); // TODO: Maybe add own exceptions?
         }
+
+        int randomIndex = random.Next(availableMoves.Count);
+        return availableMoves[randomIndex]; // Return a random valid move
     }
 
     // Strategy returning a move based on type effectiveness (most effective move)
@@ -162,6 +159,3 @@ public static class AIStrategies
         return bestMove;
     }
 }
-
-
-internal delegate BattlePokemon AITeamStrategy(BattlePokemonTeam ownPokemonTeam, BattlePokemonTeam opponentPokemonTeam);

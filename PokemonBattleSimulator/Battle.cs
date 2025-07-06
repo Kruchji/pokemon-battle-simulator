@@ -47,7 +47,7 @@ internal static class Battle
     }
 
     // Returns true if the battle ended (one Pokemon fainted), otherwise false
-    private static bool SimulateOneTurn(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? consoleWriter = null)
+    private static bool SimulateOneTurn(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? prefConsole = null)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
         if (secondPokemon == null) throw new ArgumentNullException(nameof(secondPokemon), "Second Pokemon cannot be null.");
@@ -73,44 +73,47 @@ internal static class Battle
         // Execute moves
 
         // Get fast move
-        Move fasterMove = fasterPokemon.GetNextMove(slowerPokemon);
+        BattleMove fasterBattleMove = fasterPokemon.GetNextMove(slowerPokemon);
 
-        consoleWriter?.WriteLine($"{fasterPokemon.Name} used {fasterMove.Name}.");
+        fasterBattleMove.UseMove(); // Decrease PP
+        prefConsole?.WriteLine($"{fasterPokemon.Name} used {fasterBattleMove.Move.Name}.");
 
         // Check if slower move hit (accuracy)
-        if (_randomGenerator.NextDouble() < (double)fasterMove.Accuracy / 100)
+        if (_randomGenerator.NextDouble() < (double)fasterBattleMove.Move.Accuracy / 100)
         {
             // Calculate and apply damage to slower
-            int damageToSlower = CalculateDamage(fasterPokemon.Pokemon, slowerPokemon.Pokemon, fasterMove);
+            int damageToSlower = CalculateDamage(fasterPokemon.Pokemon, slowerPokemon.Pokemon, fasterBattleMove.Move);
             slowerPokemon.TakeDamage(damageToSlower);
 
-            consoleWriter?.WriteLine($"{slowerPokemon.Name} took {damageToSlower} damage.");
+            prefConsole?.WriteLine($"{slowerPokemon.Name} took {damageToSlower} damage.");
 
             if (slowerPokemon.Fainted) return true; // If slower fainted, no need to continue
         }
         else
         {
-            consoleWriter?.WriteLine($"{fasterPokemon.Name} missed.");
+            prefConsole?.WriteLine($"{fasterPokemon.Name} missed.");
         }
 
         // Get slow move
-        Move slowerMove = slowerPokemon.GetNextMove(fasterPokemon);
-        consoleWriter?.WriteLine($"{slowerPokemon.Name} used {slowerMove.Name}.");
+        BattleMove slowerBattleMove = slowerPokemon.GetNextMove(fasterPokemon);
+
+        slowerBattleMove.UseMove(); // Decrease PP
+        prefConsole?.WriteLine($"{slowerPokemon.Name} used {slowerBattleMove.Move.Name}.");
 
         // Check if faster move hit (accuracy)
-        if (_randomGenerator.NextDouble() < (double)slowerMove.Accuracy / 100)
+        if (_randomGenerator.NextDouble() < (double)slowerBattleMove.Move.Accuracy / 100)
         {
             // Calculate and apply damage to faster
-            int damageToFaster = CalculateDamage(slowerPokemon.Pokemon, fasterPokemon.Pokemon, slowerMove);
+            int damageToFaster = CalculateDamage(slowerPokemon.Pokemon, fasterPokemon.Pokemon, slowerBattleMove.Move);
             fasterPokemon.TakeDamage(damageToFaster);
 
-            consoleWriter?.WriteLine($"{fasterPokemon.Name} took {damageToFaster} damage.");
+            prefConsole?.WriteLine($"{fasterPokemon.Name} took {damageToFaster} damage.");
 
             if (fasterPokemon.Fainted) return true; // If faster fainted, battle ends
         }
         else
         {
-            consoleWriter?.WriteLine($"{slowerPokemon.Name} missed.");
+            prefConsole?.WriteLine($"{slowerPokemon.Name} missed.");
         }
 
         return false; // Both Pokemon are still standing
@@ -118,7 +121,7 @@ internal static class Battle
 
     // true => firstPokemon won, false => secondPokemon won
     // TODO: replace with enum for battle result?
-    public static bool SimulateBattle(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? consoleWriter = null)
+    public static bool SimulateBattle(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? prefConsole = null)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
         if (secondPokemon == null) throw new ArgumentNullException(nameof(secondPokemon), "Second Pokemon cannot be null.");
@@ -130,23 +133,26 @@ internal static class Battle
             // Simulate one turn of battle
             turnNumber++;
 
-            consoleWriter?.WriteLine($"\nTurn {turnNumber}:");
-            consoleWriter?.WriteLine($"Status: {firstPokemon.Name} - {firstPokemon.CurrentHealth}/{firstPokemon.Health} HP, {secondPokemon.Name} - {secondPokemon.CurrentHealth}/{secondPokemon.Health} HP");
+            prefConsole?.WriteLine($"");
+            prefConsole?.WriteLine($"Turn {turnNumber}:");
+            prefConsole?.WriteLine($"Status: {firstPokemon.Name} - {firstPokemon.CurrentHealth}/{firstPokemon.Health} HP, {secondPokemon.Name} - {secondPokemon.CurrentHealth}/{secondPokemon.Health} HP");
 
-            battleEnded = SimulateOneTurn(firstPokemon, secondPokemon, consoleWriter);
+            battleEnded = SimulateOneTurn(firstPokemon, secondPokemon, prefConsole);
         }
 
         // Return true if firstPokemon won, false if secondPokemon won
         if (firstPokemon.Fainted && !secondPokemon.Fainted)
         {
-            consoleWriter?.WriteLine($"\n{firstPokemon.Name} fainted!");
-            consoleWriter?.WriteLine($"{secondPokemon.Name} won the battle!");
+            prefConsole?.WriteLine($"");
+            prefConsole?.WriteLine($"{firstPokemon.Name} fainted!");
+            prefConsole?.WriteLine($"{secondPokemon.Name} won the battle!");
             return false; // Second Pokemon won
         }
         else if (secondPokemon.Fainted && !firstPokemon.Fainted)
         {
-            consoleWriter?.WriteLine($"\n{secondPokemon.Name} fainted!");
-            consoleWriter?.WriteLine($"{firstPokemon.Name} won the battle!");
+            prefConsole?.WriteLine($"");
+            prefConsole?.WriteLine($"{secondPokemon.Name} fainted!");
+            prefConsole?.WriteLine($"{firstPokemon.Name} won the battle!");
             return true; // First Pokemon won
         }
         else
@@ -183,5 +189,70 @@ internal static class Battle
         });
 
         return (firstWins, secondWins);
+    }
+
+    public static bool SimulateTeamBattle(BattlePokemonTeam firstTeam, BattlePokemonTeam secondTeam, IPrefixedConsole? prefConsole = null)
+    {
+        if (firstTeam == null) throw new ArgumentNullException(nameof(firstTeam), "First team cannot be null.");
+        if (secondTeam == null) throw new ArgumentNullException(nameof(secondTeam), "Second team cannot be null.");
+
+        // First pick the leading (first) Pokemon for each team and start battle between them
+        BattlePokemon firstLeadingPokemon = firstTeam.BattlePokemonList[0] ?? throw new InvalidOperationException("First team has no valid Pokemon.");
+        BattlePokemon secondLeadingPokemon = secondTeam.BattlePokemonList[0] ?? throw new InvalidOperationException("Second team has no valid Pokemon.");
+
+        prefConsole?.WriteLine($"Team {firstTeam.Name} sent out {firstLeadingPokemon.Name}!");
+        prefConsole?.WriteLine($"Team {secondTeam.Name} sent out {secondLeadingPokemon.Name}!");
+
+        // Simulate battle between the leading Pokemon
+        bool firstWon = SimulateBattle(firstLeadingPokemon, secondLeadingPokemon, prefConsole);
+
+        // Mark the surviving Pokemon as active
+        BattlePokemon firstTeamActivePokemon = null!;
+        BattlePokemon secondTeamActivePokemon = null!;
+        if (firstWon)
+        {
+            firstTeamActivePokemon = firstLeadingPokemon;
+        }
+        else
+        {
+            secondTeamActivePokemon = secondLeadingPokemon;
+        }
+
+        // Continue the battle until one team has all Pokemon fainted
+        while (!firstTeam.AllPokemonFainted && !secondTeam.AllPokemonFainted)
+        {
+            // Pick next Pokemon for the team that lost the previous battle
+            if (firstWon)
+            {
+                // First team won the previous battle, so pick the next Pokemon for the second team
+                secondTeamActivePokemon = secondTeam.PickNextBattlePokemon(firstTeamActivePokemon);
+                prefConsole?.WriteLine($"Team {secondTeam.Name} sent out {secondTeamActivePokemon.Name}!");
+            }
+            else
+            {
+                // Second team won the previous battle, so pick the next Pokemon for the first team
+                firstTeamActivePokemon = firstTeam.PickNextBattlePokemon(secondTeamActivePokemon);
+                prefConsole?.WriteLine($"Team {firstTeam.Name} sent out {firstTeamActivePokemon.Name}!");
+            }
+
+            // Simulate battle between the active Pokemon
+            firstWon = SimulateBattle(firstTeamActivePokemon, secondTeamActivePokemon, prefConsole);
+        }
+
+        // Determine the winner
+        if (firstTeam.AllPokemonFainted && !secondTeam.AllPokemonFainted)
+        {
+            prefConsole?.WriteLine($"Team {firstTeam.Name} has no Pokemon left! Team {secondTeam.Name} wins!");
+            return false; // Second team won
+        }
+        else if (secondTeam.AllPokemonFainted && !firstTeam.AllPokemonFainted)
+        {
+            prefConsole?.WriteLine($"Team {secondTeam.Name} has no Pokemon left! Team {firstTeam.Name} team wins!");
+            return true; // First team won
+        }
+        else
+        {
+            throw new InvalidOperationException("Both teams have all Pokemon fainted at the same time. This should not happen in a basic team battle.");
+        }
     }
 }
