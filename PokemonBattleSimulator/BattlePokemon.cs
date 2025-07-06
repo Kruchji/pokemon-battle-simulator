@@ -22,6 +22,8 @@ public class BattlePokemon
     public int SpecialAttack => Pokemon.SpecialAttack;
     public int SpecialDefense => Pokemon.SpecialDefense;
 
+    // TODO: Add pp for each move (then modify in Battle and consider in strategy)
+
 
     public BattlePokemon(Pokemon pokemon, AIStrategy aiStrategy)
     {

@@ -47,7 +47,7 @@ internal static class Battle
     }
 
     // Returns true if the battle ended (one Pokemon fainted), otherwise false
-    private static bool SimulateOneTurn(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IConsoleWriter? consoleWriter = null)
+    private static bool SimulateOneTurn(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? consoleWriter = null)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
         if (secondPokemon == null) throw new ArgumentNullException(nameof(secondPokemon), "Second Pokemon cannot be null.");
@@ -118,7 +118,7 @@ internal static class Battle
 
     // true => firstPokemon won, false => secondPokemon won
     // TODO: replace with enum for battle result?
-    public static bool SimulateBattle(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IConsoleWriter? consoleWriter = null)
+    public static bool SimulateBattle(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? consoleWriter = null)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
         if (secondPokemon == null) throw new ArgumentNullException(nameof(secondPokemon), "Second Pokemon cannot be null.");

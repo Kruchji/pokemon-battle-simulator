@@ -5,17 +5,18 @@ namespace PokemonBattleSimulator;
 internal class BattleController : IController
 {
     private static readonly string _consolePrefix = "BattleMenu> ";
-    private readonly IConsoleWriter _console = new ConsoleWriter(_consolePrefix);
+    private readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     public void Run(User user)
     {
+        Console.WriteLine();
         _console.WriteLine("Welcome to the Battle Menu!");
-        _console.WriteLine("Here you can start a battle with your Pokemon teams.");
+        _console.WriteLine("Here you can start a battle with your Pokemon teams.\n");
 
-        _console.WriteLine("Type 'back' to return to the main menu.");
         while (true)
         {
-            _console.Write("");
-            var userInput = Console.ReadLine()?.Trim().ToLower();
+            _console.WriteLine("Type 'back' to return to the main menu.");
+
+            var userInput = _console.ReadLine()?.Trim().ToLower();
 
             switch (userInput)
             {
@@ -50,7 +51,7 @@ internal class BattleController : IController
 
                     break;
                 default:
-                    _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.");
+                    _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.\n");
                     break;
             }
         }

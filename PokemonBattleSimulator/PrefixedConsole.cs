@@ -2,17 +2,18 @@
 
 namespace PokemonBattleSimulator;
 
-public interface IConsoleWriter
+public interface IPrefixedConsole
 {
     void WriteLine(string message);
     void Write(string message);
+    string? ReadLine();
 }
 
-public class ConsoleWriter : IConsoleWriter
+public class PrefixedConsole : IPrefixedConsole
 {
     private readonly string _prefix;    // From controller context
 
-    public ConsoleWriter(string prefix)
+    public PrefixedConsole(string prefix)
     {
         _prefix = prefix;
     }
@@ -25,5 +26,11 @@ public class ConsoleWriter : IConsoleWriter
     public void Write(string message)
     {
         Console.Write(_prefix + message);
+    }
+
+    public string? ReadLine()
+    {
+        Console.Write(_prefix);
+        return Console.ReadLine();
     }
 }

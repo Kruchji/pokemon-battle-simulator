@@ -5,15 +5,15 @@ namespace PokemonBattleSimulator;
 internal class MainController : IController
 {
     private static readonly string _consolePrefix = "MainMenu> ";
-    private readonly IConsoleWriter _console = new ConsoleWriter(_consolePrefix);
+    private readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     public void Run(User user)
     {
-        _console.WriteLine("Welcome to the Pokemon Battle Simulator!");
-        _console.WriteLine("Type 'build' to create a Pokemon team, 'battle' to start a battle, or 'exit' to quit the application.");
+        Console.WriteLine();
+        _console.WriteLine("Welcome to the Pokemon Battle Simulator!\n");
         while (true)
         {
-            _console.Write("");
-            var userInput = Console.ReadLine()?.Trim().ToLower();
+            _console.WriteLine("Type 'build' manage your Moves and Pokemon, 'battle' to start a battle, or 'exit' to quit the application.");
+            var userInput = _console.ReadLine()?.Trim().ToLower();
 
             switch (userInput)
             {
@@ -26,10 +26,10 @@ internal class MainController : IController
                     battleController.Run(user);
                     break;
                 case "exit":
-                    _console.WriteLine("Exiting the application. Goodbye!");
+                    _console.WriteLine("Exiting the simulator. Goodbye!");
                     return;
                 default:
-                    _console.WriteLine("Invalid command. Please type 'build', 'battle', or 'exit'.");
+                    _console.WriteLine("Invalid command. Please type 'build', 'battle', or 'exit'.\n");
                     break;
             }
         }

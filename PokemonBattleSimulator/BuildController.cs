@@ -5,27 +5,36 @@ namespace PokemonBattleSimulator;
 internal class BuildController : IController
 {
     private static readonly string _consolePrefix = "BuildMenu> ";
-    private readonly IConsoleWriter _console = new ConsoleWriter(_consolePrefix);
+    private readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     public void Run(User user)
     {
+        Console.WriteLine();
         _console.WriteLine("Welcome to the Build Menu!");
-        _console.WriteLine("Here you can create and manage your Pokemon and Pokemon teams.");
+        _console.WriteLine("Here you can create and manage your Pokemon and Pokemon teams.\n");
 
-        _console.WriteLine("Type 'back' to return to the main menu.");
         while (true)
         {
-            _console.Write("");
-            var userInput = Console.ReadLine()?.Trim().ToLower();
+            _console.WriteLine("Type 'back' to return to the main menu.");
+            _console.WriteLine("Type 'newM' to create a new Move, 'newP' to create a new Pokemon, 'defaults' to load default Pokemon and Moves.");
+            _console.WriteLine("Type 'listM' or 'listP' to view paginated list of your Moves or Pokemon respectively.");
+
+            var userInput = _console.ReadLine()?.Trim().ToLower();
 
             switch (userInput)
             {
                 case "back":
                     return;
-                case "add":
-                    _console.WriteLine("Adding a new Pokemon to your team...");
-                    // Logic to add a new Pokemon would go here
-                    var examplePokemon = new Pokemon("Pikachu", 10, 10, 10, 10, 10, 10, 10, new Move("Thunderbolt", 90, 100, 15, PokemonType.Electric, MoveCategory.Special), PokemonType.Electric);
-                    user.AddPokemon(examplePokemon);
+                case "newm":
+                    BuildManager.CreateMove(user);
+                    break;
+                case "newp":
+                    BuildManager.CreatePokemon(user);
+                    break;
+                case "listm":
+                    PaginateList(user.Moves.Select(m => $"{m.Name} ({m.MoveType}, {m.Category}, ATK: {m.Power}, ACC: {m.Accuracy}, PP: {m.PP})").ToList(), "Moves");
+                    break;
+                case "listp":
+                    PaginateList(user.PokemonList.Select(p => $"{p.Name} ({p.FirstType}" + (p.SecondType.HasValue ? $"/{p.SecondType}" : "") + $", LV: {p.Level})").ToList(), "Pokemon");
                     break;
                 case "defaults":
                     _console.WriteLine("Loading default Pokemon and Moves...");
@@ -33,11 +42,42 @@ internal class BuildController : IController
                     _console.WriteLine("Default Pokemon and Moves loaded successfully.");
                     break;
                 default:
-                    _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.");
+                    _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.\n");
                     break;
             }
+        }
+    }
 
+    private void PaginateList(List<string> items, string title)
+    {
+        const int pageSize = 10;
+        if (items.Count == 0)
+        {
+            _console.WriteLine($"No {title} found.");
+            return;
+        }
 
+        int page = 0;
+        int totalPages = (int)Math.Ceiling((double)items.Count / pageSize);
+        while (true)
+        {
+            Console.WriteLine();
+            _console.WriteLine($"--- {title} (Page {page + 1}/{totalPages}) ---");
+
+            var pageItems = items.Skip(page * pageSize).Take(pageSize).ToList();
+            for (int i = 0; i < pageItems.Count; i++)
+            {
+                _console.WriteLine($"{i + 1}. {pageItems[i]}");
+            }
+
+            Console.WriteLine();
+            _console.WriteLine("Type 'n' for next page, 'p' for previous, 'q' to quit.");
+            string? input = _console.ReadLine()?.Trim().ToLower();
+            if (input == "q") break;
+            else if (input == "n" && (page + 1) * pageSize < items.Count)
+                page++;
+            else if (input == "p" && page > 0)
+                page--;
         }
     }
 }
