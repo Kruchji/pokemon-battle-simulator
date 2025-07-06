@@ -24,6 +24,11 @@ public class BattlePokemon
 
     // TODO: Add pp for each move (then modify in Battle and consider in strategy)
 
+    // Track pp for each move
+    public BattleMove[] BattleMoves { get; private set; } = new BattleMove[Pokemon.NumberOfMoves];
+
+    // Move to use if all other moves have no PP left
+    public static Move FallbackMove = new Move("Struggle", 50, 100, 1, PokemonType.Normal, MoveCategory.Physical);
 
     public BattlePokemon(Pokemon pokemon, AIStrategy aiStrategy)
     {
@@ -31,6 +36,12 @@ public class BattlePokemon
         CurrentHealth = pokemon.Health;
         Fainted = false;
         _aiStrategy = aiStrategy ?? throw new ArgumentNullException(nameof(aiStrategy), "AI strategy cannot be null.");
+
+        for (int i = 0; i < Pokemon.NumberOfMoves; i++)
+        {
+            var move = Pokemon.Moves[i];
+            BattleMoves[i] = new BattleMove(move); // Create a new BattleMove instance for each move
+        }
     }
 
     // Constructor from existing BattlePokemon, used for cloning
@@ -41,6 +52,13 @@ public class BattlePokemon
         CurrentHealth = other.CurrentHealth;
         Fainted = other.Fainted;
         _aiStrategy = other._aiStrategy; // Use the same AI strategy
+
+        // Clone the BattleMoves array
+        BattleMoves = new BattleMove[Pokemon.NumberOfMoves];
+        for (int i = 0; i < Pokemon.NumberOfMoves; i++)
+        {
+            BattleMoves[i] = new BattleMove(other.BattleMoves[i]); // Create a new BattleMove instance for each move
+        }
     }
 
     public void TakeDamage(int damage)
@@ -59,7 +77,17 @@ public class BattlePokemon
     {
         if (opponent == null) throw new ArgumentNullException(nameof(opponent), "Opponent cannot be null.");
 
+        // If all moves have no PP left, use fallback move
+        if (BattleMoves.All(battleMove => battleMove.CurrentPP <= 0))
+        {
+            return FallbackMove;        // TODO: test this behavior
+        }
+
         // Use the AI strategy to determine the next move
-        return _aiStrategy(this, opponent);
+        var selectedMove = _aiStrategy(this, opponent);
+
+        selectedMove.UseMove(); // Decrease PP for the selected move
+
+        return selectedMove.Move;
     }
 }

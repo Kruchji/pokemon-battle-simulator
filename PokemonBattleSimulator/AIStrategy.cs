@@ -3,120 +3,165 @@
 namespace PokemonBattleSimulator;
 
 // Returns Move to use
-public delegate Move AIStrategy(BattlePokemon ownPokemon, BattlePokemon opponentPokemon);
+public delegate BattleMove AIStrategy(BattlePokemon ownPokemon, BattlePokemon opponentPokemon);
 
 
 // TODO: Conside that move on any position may be null, so check for it
 public static class AIStrategies
 {
     // Strategy that always returns the first move
-    public static Move AlwaysFirstMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
+    public static BattleMove AlwaysFirstValidMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
         if (opponentPokemon == null) throw new ArgumentNullException(nameof(opponentPokemon), "Opponent Pokemon cannot be null.");
-        // Return the first move of the own Pokemon
-        return ownPokemon.Pokemon.Moves[0];
+        // Return the first (not null, with pp) move of the own Pokemon
+        foreach (var battleMove in ownPokemon.BattleMoves)
+        {
+            if (battleMove.Move != null && battleMove.CurrentPP > 0) // Ensure the move is not null and has PP left
+            {
+                return battleMove;
+            }
+        }
+        throw new InvalidOperationException("No valid moves available for this Pokemon.");  // TODO: Maybe add own exceptions?
     }
 
     // Strategy returning a random move
-    public static Move RandomMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
+    public static BattleMove RandomMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
         if (opponentPokemon == null) throw new ArgumentNullException(nameof(opponentPokemon), "Opponent Pokemon cannot be null.");
 
         // Generate a random index for the (not null) move
         Random random = new Random();
-        int randomIndex = random.Next(0, ownPokemon.Pokemon.SetMoveIndices.Count);
 
-        // Return the randomly selected move
-        return ownPokemon.Pokemon.Moves[ownPokemon.Pokemon.SetMoveIndices[randomIndex]];
+        while (true)
+        {
+            int randomIndex = random.Next(0, Pokemon.NumberOfMoves);
+            var battleMove = ownPokemon.BattleMoves[randomIndex];
+
+            if (battleMove.Move != null && battleMove.CurrentPP > 0) // Ensure the move is not null and has PP left
+            {
+                // If the randomly selected move is valid, return it
+                return battleMove;
+            }
+        }
     }
 
     // Strategy returning a move based on type effectiveness (most effective move)
-    public static Move MostEffectiveMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
+    public static BattleMove MostEffectiveMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
         if (opponentPokemon == null) throw new ArgumentNullException(nameof(opponentPokemon), "Opponent Pokemon cannot be null.");
 
-        Move bestMove = ownPokemon.Pokemon.Moves[0];
+        BattleMove bestMove = null!;
         double bestEffectiveness = double.MinValue;
 
-        foreach (var move in ownPokemon.Pokemon.Moves)
+        foreach (var battleMove in ownPokemon.BattleMoves)
         {
-            if (move == null) continue; // Skip null moves
-            double effectiveness = TypeCalculator.GetMoveEffectiveness(move, opponentPokemon.Pokemon);
+            if (battleMove.Move == null) continue; // Skip null moves
+            if (battleMove.CurrentPP == 0) continue; // Skip moves with 0 PP
+            double effectiveness = TypeCalculator.GetMoveEffectiveness(battleMove.Move, opponentPokemon.Pokemon);
             if (effectiveness > bestEffectiveness)
             {
                 bestEffectiveness = effectiveness;
-                bestMove = move;
+                bestMove = battleMove;
             }
         }
 
-        return bestMove;
+        // If no move picked
+        if (bestMove == null)
+        {
+            throw new InvalidOperationException("No valid moves available for this Pokemon.");      // TODO: Maybe add own exceptions?
+        }
+
+        return bestMove; // Return the most effective move found
     }
 
     // Strategy returning most powerful move (highest power)
-    public static Move MostPowerfulMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
+    public static BattleMove MostPowerfulMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
         if (opponentPokemon == null) throw new ArgumentNullException(nameof(opponentPokemon), "Opponent Pokemon cannot be null.");
 
-        Move bestMove = ownPokemon.Pokemon.Moves[0];
+        BattleMove bestMove = null!;
         int highestPower = 0;
 
-        foreach (var move in ownPokemon.Pokemon.Moves)
+        foreach (var battleMove in ownPokemon.BattleMoves)
         {
-            if (move == null) continue; // Skip null moves
-            if (move.Power > highestPower)
+            if (battleMove.Move == null) continue; // Skip null moves
+            if (battleMove.CurrentPP == 0) continue; // Skip moves with 0 PP
+            if (battleMove.Move.Power > highestPower)
             {
-                highestPower = move.Power;
-                bestMove = move;
+                highestPower = battleMove.Move.Power;
+                bestMove = battleMove;
             }
+        }
+
+        // If no move picked
+        if (bestMove == null)
+        {
+            throw new InvalidOperationException("No valid moves available for this Pokemon.");
         }
 
         return bestMove;
     }
 
     // Strategy returning most accurate move
-    public static Move MostAccurateMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
+    public static BattleMove MostAccurateMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
         if (opponentPokemon == null) throw new ArgumentNullException(nameof(opponentPokemon), "Opponent Pokemon cannot be null.");
-        Move bestMove = ownPokemon.Pokemon.Moves[0];
+        BattleMove bestMove = null!;
         int highestAccuracy = 0;
-        foreach (var move in ownPokemon.Pokemon.Moves)
+        foreach (var battleMove in ownPokemon.BattleMoves)
         {
-            if (move == null) continue; // Skip null moves
-            if (move.Accuracy > highestAccuracy)
+            if (battleMove.Move == null) continue; // Skip null moves
+            if (battleMove.CurrentPP == 0) continue; // Skip moves with 0 PP
+            if (battleMove.Move.Accuracy > highestAccuracy)
             {
-                highestAccuracy = move.Accuracy;
-                bestMove = move;
+                highestAccuracy = battleMove.Move.Accuracy;
+                bestMove = battleMove;
             }
         }
+
+        // If no move picked
+        if (bestMove == null)
+        {
+            throw new InvalidOperationException("No valid moves available for this Pokemon.");
+        }
+
         return bestMove;
     }
 
     // Strategy considering move effectiveness, power, and accuracy (multiplied)
-    public static Move BestOverallMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
+    public static BattleMove BestOverallMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
         if (opponentPokemon == null) throw new ArgumentNullException(nameof(opponentPokemon), "Opponent Pokemon cannot be null.");
-        Move bestMove = ownPokemon.Pokemon.Moves[0];
+        BattleMove bestMove = null!;
         double bestScore = double.MinValue;
-        foreach (var move in ownPokemon.Pokemon.Moves)
+        foreach (var battleMove in ownPokemon.BattleMoves)
         {
-            if (move == null) continue; // Skip null moves
-            double effectiveness = TypeCalculator.GetMoveEffectiveness(move, opponentPokemon.Pokemon);
-            double score = effectiveness * move.Power * (move.Accuracy / 100.0); // Normalize accuracy to a 0-1 scale
+            if (battleMove.Move == null) continue; // Skip null moves
+            if (battleMove.CurrentPP == 0) continue; // Skip moves with 0 PP
+            double effectiveness = TypeCalculator.GetMoveEffectiveness(battleMove.Move, opponentPokemon.Pokemon);
+            double score = effectiveness * battleMove.Move.Power * (battleMove.Move.Accuracy / 100.0); // Normalize accuracy to a 0-1 scale
             if (score > bestScore)
             {
                 bestScore = score;
-                bestMove = move;
+                bestMove = battleMove;
             }
         }
+
+        // If no move picked
+        if (bestMove == null)
+        {
+            throw new InvalidOperationException("No valid moves available for this Pokemon.");
+        }
+
         return bestMove;
     }
 }
 
 
-internal delegate int AITeamStrategy(BattlePokemonTeam ownPokemonTeam, BattlePokemonTeam opponentPokemonTeam);
+internal delegate BattlePokemon AITeamStrategy(BattlePokemonTeam ownPokemonTeam, BattlePokemonTeam opponentPokemonTeam);
