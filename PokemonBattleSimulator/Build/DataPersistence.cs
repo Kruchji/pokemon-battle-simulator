@@ -1,27 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace PokemonBattleSimulator;
 
-public static class DataPersistence
+public class DataPersistence
 {
     private static readonly string _consolePrefix = "DataPersistence> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     private static readonly string _userDataFile = "user.json";
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
+    private readonly IFileWrapper _fileWrapper;
 
-    public static void SerializeUserData(User user)
+    public DataPersistence(IFileWrapper fileWrapper)
+    {
+        _fileWrapper = fileWrapper ?? throw new ArgumentNullException(nameof(fileWrapper));
+    }
+
+    public void SerializeUserData(User user)
     {
         _console.WriteLine($"Saving user data to '{_userDataFile}'...");
         string json = JsonSerializer.Serialize(user, _jsonSerializerOptions);
 
         try
         {
-            File.WriteAllText(_userDataFile, json);
+            _fileWrapper.WriteAllText(_userDataFile, json);
             _console.WriteLine($"User data saved successfully to '{_userDataFile}'.");
         }
         catch (IOException ex)
@@ -35,9 +37,9 @@ public static class DataPersistence
 
     }
 
-    public static void DeserializeUserData(User user)
+    public void DeserializeUserData(User user)
     {
-        if (File.Exists(_userDataFile))
+        if (_fileWrapper.Exists(_userDataFile))
         {
             _console.WriteLine($"Loading user data from '{_userDataFile}'...");
 
@@ -45,7 +47,7 @@ public static class DataPersistence
             string jsonData;
             try
             {
-                jsonData = File.ReadAllText(_userDataFile);
+                jsonData = _fileWrapper.ReadAllText(_userDataFile);
             }
             catch (IOException ex)
             {

@@ -7,6 +7,7 @@ internal sealed class BuildController : IController
 {
     private static readonly string _consolePrefix = "BuildMenu> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
+    private static readonly DataPersistence _dataPersistence = new DataPersistence(new FileWrapper());
 
     public void Run(User user)
     {
@@ -55,10 +56,10 @@ internal sealed class BuildController : IController
                     _console.WriteLine("Default Pokemon and Moves loaded successfully.\n");
                     break;
                 case "save":
-                    DataPersistence.SerializeUserData(user);
+                    _dataPersistence.SerializeUserData(user);
                     break;
                 case "load":
-                    DataPersistence.DeserializeUserData(user);
+                    _dataPersistence.DeserializeUserData(user);
                     break;
                 case "clear":
                     _console.WriteLine("Clearing all data...");
