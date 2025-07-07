@@ -22,8 +22,6 @@ public class BattlePokemon
     public int SpecialAttack => Pokemon.SpecialAttack;
     public int SpecialDefense => Pokemon.SpecialDefense;
 
-    // TODO: Add pp for each move (then modify in Battle and consider in strategy)
-
     // Track pp for each move
     public BattleMove[] BattleMoves { get; private set; } = new BattleMove[Pokemon.NumberOfMoves];
 

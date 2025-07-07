@@ -119,8 +119,7 @@ internal static class Battle
         return TurnResult.BattleOngoing; // Both Pokemon are still standing
     }
 
-    // true => firstPokemon won, false => secondPokemon won
-    // TODO: replace with enum for battle result?
+
     public static BattleResult SimulateBattle(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? prefConsole = null)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");

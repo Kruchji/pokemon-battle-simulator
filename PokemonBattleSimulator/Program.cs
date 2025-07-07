@@ -4,10 +4,10 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        // TODO: Implement main logic for the Pokemon Battle Simulator.
-
+        // Create a new user storing all Moves, Pokemon and Teams
         var user = new User();
 
+        // Launch main menu
         var mainController = new MainController();
         mainController.Run(user);
     }
