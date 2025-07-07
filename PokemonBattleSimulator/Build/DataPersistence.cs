@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PokemonBattleSimulator;
 
-internal static class DataPersistence
+public static class DataPersistence
 {
     private static readonly string _consolePrefix = "DataPersistence> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);

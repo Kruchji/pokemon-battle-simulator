@@ -2,6 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
+// Returns BattlePokemon to send out
 public delegate BattlePokemon AITeamStrategy(BattlePokemonTeam ownPokemonTeam, BattlePokemon opponentPokemon);
 
 public static class AITeamStrategies

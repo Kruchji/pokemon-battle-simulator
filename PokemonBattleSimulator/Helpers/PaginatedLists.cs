@@ -2,11 +2,11 @@
 
 namespace PokemonBattleSimulator;
 
-internal static class PaginatedLists
+public static class PaginatedLists
 {
     private static readonly string _consolePrefix = "PaginatedList> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
-    public const int PageSize = 10; // Number of items per page
+    public static readonly int PageSize = 10; // Number of items per page
 
     // List with selection of one item
     public static int? PaginatedListWithSelection(List<string> items, string title)

@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal static class Prompts
+public static class Prompts
 {
     private static readonly string _consolePrefix = "Prompt> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PokemonBattleSimulator;
 
-internal static class Battle
+public static class Battle
 {
     public static readonly string ConsolePrefix = "Battle> ";   // Used in Battle Controller
     private static readonly Random _randomGenerator = new Random();

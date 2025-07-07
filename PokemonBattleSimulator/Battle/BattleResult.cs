@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal enum BattleResult
+public enum BattleResult
 {
     FirstPlayerWin,
     SecondPlayerWin,

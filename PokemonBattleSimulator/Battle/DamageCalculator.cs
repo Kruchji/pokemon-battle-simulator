@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal static class DamageCalculator
+public static class DamageCalculator
 {
     private static readonly double _criticalHitChance = 1 / 24; // about 4.17% (Gen VII onwards)
     private static readonly double _criticalHitMultiplier = 1.5; // Critical hit damage multiplier (Gen VI onwards)

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace PokemonBattleSimulator;
 
-internal static class StrategyManager
+public static class StrategyManager
 {
     public static List<MethodInfo> GetStrategyMethods(Type strategyClass, Type delegateType)
     {

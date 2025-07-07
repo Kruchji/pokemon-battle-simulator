@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal static class Parsers
+public static class Parsers
 {
     public static Func<string, (bool, int)> TryParseIntInRange(int min, int max)
     {
