@@ -15,8 +15,9 @@ internal class BuildController : IController
         while (true)
         {
             _console.WriteLine("Type 'back' to return to the main menu.");
-            _console.WriteLine("Type 'newM' to create a new Move, 'newP' to create a new Pokemon, 'defaults' to load default Pokemon and Moves.");
-            _console.WriteLine("Type 'listM' or 'listP' to view paginated list of your Moves or Pokemon respectively.");
+            _console.WriteLine("Type 'newM', 'newP' to create a new Move or Pokemon respectively.");
+            _console.WriteLine("Type 'listM', 'listP', 'listT' to view paginated list of your Moves, Pokemon or Teams respectively.");
+            _console.WriteLine("Type 'defaults' to load default Pokemon and Moves.\n");
 
             var userInput = _console.ReadLine()?.Trim().ToLower();
 
@@ -35,6 +36,9 @@ internal class BuildController : IController
                     break;
                 case "listp":
                     PaginateList(user.PokemonList.Select(p => $"{p.Name} ({p.FirstType}" + (p.SecondType.HasValue ? $"/{p.SecondType}" : "") + $", LV: {p.Level})").ToList(), "Pokemon");
+                    break;
+                case "listt":
+                    PaginateList(user.PokemonTeams.Select(t => $"{t.Name} (Contains: " + string.Join(", ", t.PokemonList.Select(p => p?.Name ?? "empty")) + ")").ToList(), "Pokemon Teams");
                     break;
                 case "defaults":
                     _console.WriteLine("Loading default Pokemon and Moves...");

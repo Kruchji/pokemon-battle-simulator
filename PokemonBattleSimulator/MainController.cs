@@ -12,7 +12,7 @@ internal class MainController : IController
         _console.WriteLine("Welcome to the Pokemon Battle Simulator!\n");
         while (true)
         {
-            _console.WriteLine("Type 'build' manage your Moves and Pokemon, 'battle' to start a battle, or 'exit' to quit the application.");
+            _console.WriteLine("Type 'build' manage your Moves and Pokemon, 'battle' to start a battle, or 'exit' to quit the application.\n");
             var userInput = _console.ReadLine()?.Trim().ToLower();
 
             switch (userInput)

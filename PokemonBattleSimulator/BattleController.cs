@@ -19,7 +19,7 @@ internal class BattleController : IController
             _console.WriteLine("Type 'battle' to start a battle with two Pokemon.");
             _console.WriteLine("Type 'battleMany' to simulate many battles with two Pokemon.");
             _console.WriteLine("Type 'battleTeam' to start a team battle with two Pokemon teams.");
-            _console.WriteLine("Type 'battleTeamMany' to simulate many team battles with two Pokemon teams.");
+            _console.WriteLine("Type 'battleTeamMany' to simulate many team battles with two Pokemon teams.\n");
 
             var userInput = _console.ReadLine()?.Trim().ToLower();
 
