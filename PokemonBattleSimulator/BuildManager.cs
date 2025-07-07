@@ -105,10 +105,42 @@ internal static class BuildManager
             pokemon.SetMove(i, selectedMoves[i]);
         }
 
-        user.PokemonList.Add(pokemon);
+        user.AddPokemon(pokemon);
 
         Console.WriteLine();
         _console.WriteLine($"Pokémon '{name}' created successfully!");
+    }
+
+    public static void CreatePokemonTeam(User user)
+    {
+        // Guides user to create a new Pokémon team
+        if (user.PokemonList.Count == 0)
+        {
+            _console.WriteLine("You must create at least one Pokémon before creating a team.");
+            return;
+        }
+
+        _console.WriteLine("Let's create a new Pokémon team.");
+        _console.WriteLine($"You can type '{_abortCommand}' at any time to cancel the process.\n");
+
+        string teamName = PromptUntilValid("Enter team name:", s => !string.IsNullOrWhiteSpace(s), "Name cannot be empty.");
+        if (teamName == null) return;
+
+        var selectedPokemon = PromptPokemonSelection(user);
+        if (selectedPokemon == null) return;
+
+        // Create team with name and Pokemon
+        var pokemonTeam = new PokemonTeam(teamName, selectedPokemon[0]);
+        for (int i = 1; i < selectedPokemon.Count; i++)
+        {
+            pokemonTeam.AddPokemon(i, selectedPokemon[i]);
+        }
+
+        // Add team to the user
+        user.AddPokemonTeam(pokemonTeam);
+
+        Console.WriteLine();
+        _console.WriteLine($"Pokémon team '{teamName}' created successfully!");
     }
 
     // TODO: Move these to separate class?
@@ -175,6 +207,8 @@ internal static class BuildManager
             return (parsed && value >= min && value <= max, value);
         };
     }
+
+    // TODO: Maybe put two methods below together?
 
     private static List<Move>? PromptMoveSelection(User user)
     {
@@ -253,6 +287,85 @@ internal static class BuildManager
             else
             {
                 _console.WriteLine("Invalid move index. Please try again.");
+            }
+        }
+
+        return selected;
+    }
+
+
+    private static List<Pokemon>? PromptPokemonSelection(User user)
+    {
+        const int pageSize = 10;
+        var pokemons = user.PokemonList;
+        int page = 0;
+        int totalPages = (pokemons.Count + pageSize - 1) / pageSize;
+        var selected = new List<Pokemon>();
+
+        while (selected.Count < PokemonTeam.MaxTeamSize)
+        {
+            Console.WriteLine();
+            _console.WriteLine($"Page {page + 1}/{totalPages}:");
+
+            var pagePokemon = pokemons.Skip(page * pageSize).Take(pageSize).ToList();
+
+            for (int i = 0; i < pagePokemon.Count; i++)
+            {
+                var pkmn = pagePokemon[i];
+                _console.WriteLine($"{i + 1}. {pkmn.Name} ({pkmn.FirstType}" + (pkmn.SecondType.HasValue ? $"/{pkmn.SecondType}" : "") + $", LV: {pkmn.Level})");
+            }
+
+            _console.WriteLine("Type 'n' for next page, 'p' for previous page.\n");
+            _console.WriteLine($"Type 'done' when you're finished selecting Pokémon (1 to {PokemonTeam.MaxTeamSize}).");
+            _console.WriteLine($"Current team: {string.Join(", ", selected.Select(p => p.Name))}\n");
+            _console.WriteLine("Select Pokémon by number:");
+
+            string? input = _console.ReadLine();
+            if (string.Equals(input, _abortCommand, StringComparison.OrdinalIgnoreCase)) return null;
+
+            if (string.Equals(input, "done", StringComparison.OrdinalIgnoreCase))
+            {
+                if (selected.Count >= 1) break;
+                _console.WriteLine("You must select at least one Pokémon.");
+                continue;
+            }
+
+            if (string.Equals(input, "n", StringComparison.OrdinalIgnoreCase))
+            {
+                if (page < totalPages - 1)
+                {
+                    page++;
+                }
+                else
+                {
+                    _console.WriteLine("You are already on the last page.");
+                }
+                continue;
+            }
+
+            if (string.Equals(input, "p", StringComparison.OrdinalIgnoreCase))
+            {
+                if (page > 0)
+                {
+                    page--;
+                }
+                else
+                {
+                    _console.WriteLine("You are already on the first page.");
+                }
+                continue;
+            }
+
+            if (int.TryParse(input, out int index) && index >= 1 && index <= pagePokemon.Count)
+            {
+                var selectedPokemon = pagePokemon[index - 1];
+
+                selected.Add(selectedPokemon);
+                _console.WriteLine($"Added: {selectedPokemon.Name}");
+            }
+            else
+            {
+                _console.WriteLine("Invalid input. Please enter a valid number or command.");
             }
         }
 

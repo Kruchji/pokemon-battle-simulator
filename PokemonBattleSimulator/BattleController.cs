@@ -92,6 +92,8 @@ internal class BattleController : IController
         }
     }
 
+    // TODO: Refactor to move to BattleManager similar to BuildController
+
     private BattlePokemon? SelectPokemonWithStrategy(List<Pokemon> available, string label)
     {
         _console.WriteLine($"Select {label} Pokémon:");
