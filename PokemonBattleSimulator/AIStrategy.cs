@@ -6,7 +6,6 @@ namespace PokemonBattleSimulator;
 public delegate BattleMove AIStrategy(BattlePokemon ownPokemon, BattlePokemon opponentPokemon);
 
 
-// TODO: Conside that move on any position may be null, so check for it
 public static class AIStrategies
 {
     // Strategy that always returns the first move

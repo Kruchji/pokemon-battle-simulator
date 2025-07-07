@@ -111,6 +111,8 @@ internal static class BuildManager
         _console.WriteLine($"Pokémon '{name}' created successfully!");
     }
 
+    // TODO: Move these to separate class?
+
     // For general validation
     private static string PromptUntilValid(string prompt, Func<string, bool> validator, string errorMessage)
     {
