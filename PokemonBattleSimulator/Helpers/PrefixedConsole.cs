@@ -2,14 +2,14 @@
 
 namespace PokemonBattleSimulator;
 
-public interface IPrefixedConsole
+internal interface IPrefixedConsole
 {
     void WriteLine(string message);
     void Write(string message);
     string? ReadLine();
 }
 
-public class PrefixedConsole : IPrefixedConsole
+internal class PrefixedConsole : IPrefixedConsole
 {
     private readonly string _prefix;    // From controller context
 

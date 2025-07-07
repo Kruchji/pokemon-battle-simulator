@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-public class BattlePokemonTeam
+internal class BattlePokemonTeam
 {
     public PokemonTeam _pokemonTeam;
     public string Name => _pokemonTeam.Name; // Team name from the PokemonTeam

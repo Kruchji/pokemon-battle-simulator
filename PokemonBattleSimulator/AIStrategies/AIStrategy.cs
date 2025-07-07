@@ -3,10 +3,10 @@
 namespace PokemonBattleSimulator;
 
 // Returns Move to use
-public delegate BattleMove AIStrategy(BattlePokemon ownPokemon, BattlePokemon opponentPokemon);
+internal delegate BattleMove AIStrategy(BattlePokemon ownPokemon, BattlePokemon opponentPokemon);
 
 
-public static class AIStrategies
+internal static class AIStrategies
 {
     // Strategy that always returns the first move
     public static BattleMove AlwaysFirstValidMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)

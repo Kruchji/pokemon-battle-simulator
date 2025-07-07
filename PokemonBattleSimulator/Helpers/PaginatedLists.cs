@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-public static class PaginatedLists
+internal static class PaginatedLists
 {
     private static readonly string _consolePrefix = "PaginatedList> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);

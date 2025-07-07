@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace PokemonBattleSimulator;
 
 // Pokemon team consists of 6 Pokemon
-public class PokemonTeam
+internal class PokemonTeam
 {
     public static readonly int MaxTeamSize = 6;
     public string Name { get; set; }

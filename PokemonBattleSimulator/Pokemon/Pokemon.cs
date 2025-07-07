@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace PokemonBattleSimulator;
 
-public record Pokemon
+internal record Pokemon
 {
     public string Name { get; private set; }
     public int Level { get; private set; }

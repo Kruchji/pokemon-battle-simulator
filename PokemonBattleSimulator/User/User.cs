@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace PokemonBattleSimulator;
 
-public class User
+internal class User
 {
     [JsonInclude]   // Needed as setter is private
     public List<Pokemon> PokemonList { get; private set; } = new List<Pokemon>();

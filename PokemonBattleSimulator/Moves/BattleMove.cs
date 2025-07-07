@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-public class BattleMove
+internal class BattleMove
 {
     public int CurrentPP { get; private set; }
     public Move Move { get; private set; }

@@ -3,7 +3,7 @@
 namespace PokemonBattleSimulator;
 
 // Created on battle start, tracks pokemon's current state in battle
-public class BattlePokemon
+internal class BattlePokemon
 {
     public Pokemon Pokemon;
     public int CurrentHealth { get; private set; }

@@ -3,9 +3,9 @@
 namespace PokemonBattleSimulator;
 
 // Returns BattlePokemon to send out
-public delegate BattlePokemon AITeamStrategy(BattlePokemonTeam ownPokemonTeam, BattlePokemon opponentPokemon);
+internal delegate BattlePokemon AITeamStrategy(BattlePokemonTeam ownPokemonTeam, BattlePokemon opponentPokemon);
 
-public static class AITeamStrategies
+internal static class AITeamStrategies
 {
     // Strategy that always picks the next valid BattlePokemon
     public static BattlePokemon AlwaysFirstValidPokemon(BattlePokemonTeam ownPokemonTeam, BattlePokemon opponentPokemon)

@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace PokemonBattleSimulator;
 
-public class DataPersistence
+internal class DataPersistence
 {
     private static readonly string _consolePrefix = "DataPersistence> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);

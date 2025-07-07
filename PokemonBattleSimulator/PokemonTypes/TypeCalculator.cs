@@ -3,7 +3,7 @@
 namespace PokemonBattleSimulator;
 
 // Store type table and have methods to calculate effectiveness
-public static class TypeCalculator
+internal static class TypeCalculator
 {
     // Stores effectiveness of types (Attacker, Defender)
     private static readonly double[,] _typeChart;
