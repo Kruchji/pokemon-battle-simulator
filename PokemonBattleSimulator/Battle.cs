@@ -191,6 +191,36 @@ internal static class Battle
         return (firstWins, secondWins);
     }
 
+    public static (int, int) SimulateManyTeamBattles(BattlePokemonTeam firstTeam, BattlePokemonTeam secondTeam, int battleCount)
+    {
+        if (firstTeam == null) throw new ArgumentNullException(nameof(firstTeam), "First team cannot be null.");
+        if (secondTeam == null) throw new ArgumentNullException(nameof(secondTeam), "Second team cannot be null.");
+        if (battleCount <= 0) throw new ArgumentOutOfRangeException(nameof(battleCount), "Battle count must be greater than zero.");
+
+        // Track wins for each team
+        int firstWins = 0;
+        int secondWins = 0;
+
+        // Run all battles in parallel
+        Parallel.For(0, battleCount, _ =>
+        {
+            // Clone the teams for each battle to reset their state
+            BattlePokemonTeam firstTeamClone = new BattlePokemonTeam(firstTeam);
+            BattlePokemonTeam secondTeamClone = new BattlePokemonTeam(secondTeam);
+
+            bool firstWon = SimulateTeamBattle(firstTeamClone, secondTeamClone, null); // No console output
+            if (firstWon)
+            {
+                Interlocked.Increment(ref firstWins);
+            }
+            else
+            {
+                Interlocked.Increment(ref secondWins);
+            }
+        });
+        return (firstWins, secondWins);
+    }
+
     public static bool SimulateTeamBattle(BattlePokemonTeam firstTeam, BattlePokemonTeam secondTeam, IPrefixedConsole? prefConsole = null)
     {
         if (firstTeam == null) throw new ArgumentNullException(nameof(firstTeam), "First team cannot be null.");

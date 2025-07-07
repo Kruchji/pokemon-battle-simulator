@@ -16,6 +16,10 @@ internal class BattleController : IController
         while (true)
         {
             _console.WriteLine("Type 'back' to return to the main menu.");
+            _console.WriteLine("Type 'battle' to start a battle with two Pokemon.");
+            _console.WriteLine("Type 'battleMany' to simulate many battles with two Pokemon.");
+            _console.WriteLine("Type 'battleTeam' to start a team battle with two Pokemon teams.");
+            _console.WriteLine("Type 'battleTeamMany' to simulate many team battles with two Pokemon teams.");
 
             var userInput = _console.ReadLine()?.Trim().ToLower();
 
@@ -65,6 +69,21 @@ internal class BattleController : IController
 
                     _console.WriteLine($"Starting team battle between {firstTeam.Name} and {secondTeam.Name}...");
                     Battle.SimulateTeamBattle(firstTeam, secondTeam, _console);
+                    break;
+                case "battleteammany":
+                    _console.WriteLine("Setting up many team battles with your Pokemon teams...");
+
+                    int teamBattleCount = PromptUntilValid("Enter the number of battles to simulate:", TryParseIntInRange(1, 100000), "Please enter a valid number between 1 and 100000.");
+
+                    var firstManyTeam = SelectTeamWithStrategies(user.PokemonTeams, "First");
+                    if (firstManyTeam == null) break;
+
+                    var secondManyTeam = SelectTeamWithStrategies(user.PokemonTeams, "Second");
+                    if (secondManyTeam == null) break;
+
+                    _console.WriteLine($"Starting {teamBattleCount} team battles between {firstManyTeam.Name} and {secondManyTeam.Name}...");
+                    var (firstTeamWins, secondTeamWins) = Battle.SimulateManyTeamBattles(firstManyTeam, secondManyTeam, teamBattleCount);
+                    _console.WriteLine($"After {teamBattleCount} battles: {firstManyTeam.Name} won {firstTeamWins} times, {secondManyTeam.Name} won {secondTeamWins} times.");
                     break;
                 default:
                     _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.\n");

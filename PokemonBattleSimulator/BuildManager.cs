@@ -283,6 +283,7 @@ internal static class BuildManager
 
         bulbasaur.SetMove(1, vineWhip);
 
+        // TODO: Include more teams in defaults
         var starterTeam = new PokemonTeam("Starter Team", pikachu);
         starterTeam.AddPokemon(1, charmander);
         starterTeam.AddPokemon(2, bulbasaur);
