@@ -2,7 +2,7 @@
 
 namespace PokemonBattleSimulator;
 
-internal class MainController : IController
+internal sealed class MainController : IController
 {
     private static readonly string _consolePrefix = "MainMenu> ";
     private readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);

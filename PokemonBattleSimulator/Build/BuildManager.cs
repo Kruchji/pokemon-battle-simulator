@@ -7,38 +7,35 @@ internal static class BuildManager
     private static readonly string _consolePrefix = "BuildManager> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
 
-    private static readonly string _abortCommand = "abort";
-
     public static void CreateMove(User user)
     {
         _console.WriteLine("Let's create a new Pokemon move.");
-        _console.WriteLine($"You can type '{_abortCommand}' at any time to cancel the process.\n");
+        _console.WriteLine($"You can type '{Prompts.AbortCommand}' at any time to cancel the process.\n");
 
-        string name = PromptUntilValid("Enter move name:", s => !string.IsNullOrWhiteSpace(s), "Name cannot be empty.");
+        string name = Prompts.PromptUntilValid("Enter move name:", s => !string.IsNullOrWhiteSpace(s), "Name cannot be empty.");
         if (name == null) return;
 
-        int? power = PromptUntilValid("Enter move power (0-250):", TryParseIntInRange(0, 250), "Power must be a number between 0 and 250.");
+        int? power = Prompts.PromptUntilValid("Enter move power (0-250):", Parsers.TryParseIntInRange(0, 250), "Power must be a number between 0 and 250.");
         if (power == null) return;
 
-        int? accuracy = PromptUntilValid("Enter move accuracy (1-100):", TryParseIntInRange(1, 100), "Accuracy must be between 1 and 100.");
+        int? accuracy = Prompts.PromptUntilValid("Enter move accuracy (1-100):", Parsers.TryParseIntInRange(1, 100), "Accuracy must be between 1 and 100.");
         if (accuracy == null) return;
 
-        int? pp = PromptUntilValid("Enter move PP (1-40):", TryParseIntInRange(1, 40), "PP must be between 1 and 40.");
+        int? pp = Prompts.PromptUntilValid("Enter move PP (1-40):", Parsers.TryParseIntInRange(1, 40), "PP must be between 1 and 40.");
         if (pp == null) return;
 
-        PokemonType? moveType = PromptEnum<PokemonType>("Enter move type (e.g., Fire, Water):");
+        PokemonType? moveType = Prompts.PromptEnum<PokemonType>("Enter move type (e.g., Fire, Water):");
         if (moveType == null) return;
 
-        MoveCategory? category = PromptEnum<MoveCategory>("Enter move category (e.g., Physical, Special, Status):");
+        MoveCategory? category = Prompts.PromptEnum<MoveCategory>("Enter move category (e.g., Physical, Special):");
         if (category == null) return;
 
         var move = new Move(name, (int)power, (int)accuracy, (int)pp, (PokemonType)moveType, (MoveCategory)category);
         user.AddMove(move);
 
         Console.WriteLine();
-        _console.WriteLine($"Move '{name}' created successfully!");
+        _console.WriteLine($"Move '{name}' created successfully!\n");
     }
-
 
     public static void CreatePokemon(User user)
     {
@@ -50,47 +47,47 @@ internal static class BuildManager
         }
 
         _console.WriteLine("Let's create a new Pokémon.");
-        _console.WriteLine($"You can type '{_abortCommand}' at any time to cancel the process.\n");
+        _console.WriteLine($"You can type '{Prompts.AbortCommand}' at any time to cancel the process.\n");
 
-        string name = PromptUntilValid("Enter Pokémon name:", s => !string.IsNullOrWhiteSpace(s), "Name cannot be empty.");
+        string name = Prompts.PromptUntilValid("Enter Pokémon name:", s => !string.IsNullOrWhiteSpace(s), "Name cannot be empty.");
         if (name == null) return;
 
         // Define stats
 
-        int? level = PromptUntilValid("Enter level (1-100):", TryParseIntInRange(1, 100), "Level must be between 1 and 100.");
+        int? level = Prompts.PromptUntilValid("Enter level (1-100):", Parsers.TryParseIntInRange(1, 100), "Level must be between 1 and 100.");
         if (level == null) return;
 
-        int? health = PromptUntilValid("Enter health (1-999):", TryParseIntInRange(1, 999), "Health must be between 1 and 999.");
+        int? health = Prompts.PromptUntilValid("Enter health (1-999):", Parsers.TryParseIntInRange(1, 999), "Health must be between 1 and 999.");
         if (health == null) return;
 
-        int? attack = PromptUntilValid("Enter attack (1-999):", TryParseIntInRange(1, 999), "Attack must be between 1 and 999.");
+        int? attack = Prompts.PromptUntilValid("Enter attack (1-999):", Parsers.TryParseIntInRange(1, 999), "Attack must be between 1 and 999.");
         if (attack == null) return;
 
-        int? defense = PromptUntilValid("Enter defense (1-999):", TryParseIntInRange(1, 999), "Defense must be between 1 and 999.");
+        int? defense = Prompts.PromptUntilValid("Enter defense (1-999):", Parsers.TryParseIntInRange(1, 999), "Defense must be between 1 and 999.");
         if (defense == null) return;
 
-        int? speed = PromptUntilValid("Enter speed (1-999):", TryParseIntInRange(1, 999), "Speed must be between 1 and 999.");
+        int? speed = Prompts.PromptUntilValid("Enter speed (1-999):", Parsers.TryParseIntInRange(1, 999), "Speed must be between 1 and 999.");
         if (speed == null) return;
 
-        int? spAttack = PromptUntilValid("Enter special attack (1-999):", TryParseIntInRange(1, 999), "Special Attack must be between 1 and 999.");
+        int? spAttack = Prompts.PromptUntilValid("Enter special attack (1-999):", Parsers.TryParseIntInRange(1, 999), "Special Attack must be between 1 and 999.");
         if (spAttack == null) return;
 
-        int? spDefense = PromptUntilValid("Enter special defense (1-999):", TryParseIntInRange(1, 999), "Special Defense must be between 1 and 999.");
+        int? spDefense = Prompts.PromptUntilValid("Enter special defense (1-999):", Parsers.TryParseIntInRange(1, 999), "Special Defense must be between 1 and 999.");
         if (spDefense == null) return;
 
         // Define types
 
-        PokemonType? firstType = PromptEnum<PokemonType>("Enter first type:");
+        PokemonType? firstType = Prompts.PromptEnum<PokemonType>("Enter first type:");
         if (firstType == null) return;
 
-        (PokemonType? secondType, bool emptySecondType) = PromptEnumOptional<PokemonType>("Enter second type (or press Enter to skip):");
+        (PokemonType? secondType, bool emptySecondType) = Prompts.PromptEnumOptional<PokemonType>("Enter second type (or press Enter to skip):");
         if (secondType == null && !emptySecondType) return;
 
         // Move selection
 
         Console.WriteLine();
         _console.WriteLine("Select at least one move (up to 4):");
-        var selectedMoves = PromptMoveSelection(user);
+        var selectedMoves = Prompts.PromptMoveSelection(user);
         if (selectedMoves == null || selectedMoves.Count == 0) return;
 
         // Create Pokémon
@@ -108,7 +105,7 @@ internal static class BuildManager
         user.AddPokemon(pokemon);
 
         Console.WriteLine();
-        _console.WriteLine($"Pokémon '{name}' created successfully!");
+        _console.WriteLine($"Pokémon '{name}' created successfully!\n");
     }
 
     public static void CreatePokemonTeam(User user)
@@ -121,12 +118,12 @@ internal static class BuildManager
         }
 
         _console.WriteLine("Let's create a new Pokémon team.");
-        _console.WriteLine($"You can type '{_abortCommand}' at any time to cancel the process.\n");
+        _console.WriteLine($"You can type '{Prompts.AbortCommand}' at any time to cancel the process.\n");
 
-        string teamName = PromptUntilValid("Enter team name:", s => !string.IsNullOrWhiteSpace(s), "Name cannot be empty.");
+        string teamName = Prompts.PromptUntilValid("Enter team name:", s => !string.IsNullOrWhiteSpace(s), "Name cannot be empty.");
         if (teamName == null) return;
 
-        var selectedPokemon = PromptPokemonSelection(user);
+        var selectedPokemon = Prompts.PromptPokemonSelection(user);
         if (selectedPokemon == null) return;
 
         // Create team with name and Pokemon
@@ -140,238 +137,8 @@ internal static class BuildManager
         user.AddPokemonTeam(pokemonTeam);
 
         Console.WriteLine();
-        _console.WriteLine($"Pokémon team '{teamName}' created successfully!");
+        _console.WriteLine($"Pokémon team '{teamName}' created successfully!\n");
     }
-
-    // TODO: Move these to separate class?
-
-    // For general validation
-    private static string PromptUntilValid(string prompt, Func<string, bool> validator, string errorMessage)
-    {
-        while (true)
-        {
-            _console.WriteLine(prompt);
-            string? input = _console.ReadLine();
-            if (string.Equals(input, _abortCommand, StringComparison.OrdinalIgnoreCase)) return null!;
-            if (input != null && validator(input)) return input;
-            _console.WriteLine(errorMessage);
-        }
-    }
-
-    // For int validation
-    private static int? PromptUntilValid(string prompt, Func<string, (bool success, int value)> parser, string errorMessage)
-    {
-        while (true)
-        {
-            _console.WriteLine(prompt);
-            string? input = _console.ReadLine();
-            if (string.Equals(input, _abortCommand, StringComparison.OrdinalIgnoreCase)) return null;
-            var (success, value) = parser(input ?? "");
-            if (success) return value;
-            _console.WriteLine(errorMessage);
-        }
-    }
-
-    private static T? PromptEnum<T>(string prompt) where T : struct, Enum
-    {
-        while (true)
-        {
-            _console.WriteLine(prompt);
-            _console.WriteLine($"Available: {string.Join(", ", Enum.GetNames(typeof(T)))}");
-            string? input = _console.ReadLine();
-            if (string.Equals(input, _abortCommand, StringComparison.OrdinalIgnoreCase)) return null;
-            if (!int.TryParse(input, out _) && Enum.TryParse<T>(input, true, out var result)) return result;
-            _console.WriteLine("Invalid choice. Try again.");
-        }
-    }
-
-    private static (T?, bool empty) PromptEnumOptional<T>(string prompt) where T : struct, Enum
-    {
-        while (true)
-        {
-            _console.WriteLine(prompt);
-            _console.WriteLine($"Available: {string.Join(", ", Enum.GetNames(typeof(T)))}");
-            string? input = _console.ReadLine();
-            if (string.Equals(input, _abortCommand, StringComparison.OrdinalIgnoreCase)) return (null, false);
-            if (string.IsNullOrWhiteSpace(input)) return (null, true); // User pressed Enter without input
-            if (!int.TryParse(input, out _) && Enum.TryParse<T>(input, true, out var result)) return (result, false);
-            _console.WriteLine("Invalid choice. Try again.");
-        }
-    }
-
-    private static Func<string, (bool, int)> TryParseIntInRange(int min, int max)
-    {
-        return input =>
-        {
-            bool parsed = int.TryParse(input, out int value);
-            return (parsed && value >= min && value <= max, value);
-        };
-    }
-
-    // TODO: Maybe put two methods below together?
-
-    private static List<Move>? PromptMoveSelection(User user)
-    {
-        const int pageSize = 10;
-        var moves = user.Moves;
-        int page = 0;
-        int totalPages = (moves.Count + pageSize - 1) / pageSize;
-        var selected = new List<Move>();
-
-        while (selected.Count < Pokemon.NumberOfMoves)
-        {
-            Console.WriteLine();
-            _console.WriteLine($"Page {page + 1}/{totalPages}:");
-            var pageMoves = moves.Skip(page * pageSize).Take(pageSize).ToList();
-
-            // List all moves
-            for (int i = 0; i < pageMoves.Count; i++)
-            {
-                _console.WriteLine($"{i + 1}. {pageMoves[i].Name} ({pageMoves[i].MoveType}, {pageMoves[i].Category}, ATK: {pageMoves[i].Power}, ACC: {pageMoves[i].Accuracy}, PP: {pageMoves[i].PP})");
-            }
-
-            // Next/prev page message
-            _console.WriteLine("Type 'n' for next page, 'p' for previous page.");
-
-            _console.WriteLine("Type 'done' when you're finished selecting moves (at least one required).");
-
-            _console.WriteLine($"Currently selected moves: {string.Join(", ", selected.Select(m => m.Name))}");
-
-            _console.WriteLine("Select move by number:");
-            string? input = _console.ReadLine();
-            if (string.Equals(input, _abortCommand, StringComparison.OrdinalIgnoreCase)) return null;
-
-            // End selection
-            if (string.Equals(input, "done", StringComparison.OrdinalIgnoreCase))
-            {
-                if (selected.Count >= 1) break;
-                _console.WriteLine("You must select at least one move.");
-                continue;
-            }
-
-            // Move to next page
-            if (string.Equals(input, "n", StringComparison.OrdinalIgnoreCase))
-            {
-                if (page < totalPages - 1)
-                {
-                    page++;
-                }
-                else
-                {
-                    _console.WriteLine("You are already on the last page.");
-                }
-                continue;
-            }
-
-            // Move to previous page
-            if (string.Equals(input, "p", StringComparison.OrdinalIgnoreCase))
-            {
-                if (page > 0)
-                {
-                    page--;
-                }
-                else
-                {
-                    _console.WriteLine("You are already on the first page.");
-                }
-                continue;
-            }
-
-            if (int.TryParse(input, out int index) && index >= 1 && index <= pageMoves.Count)
-            {
-                var move = pageMoves[index - 1];
-
-                selected.Add(move);
-                _console.WriteLine($"Added: {move.Name}");
-            }
-            else
-            {
-                _console.WriteLine("Invalid move index. Please try again.");
-            }
-        }
-
-        return selected;
-    }
-
-
-    private static List<Pokemon>? PromptPokemonSelection(User user)
-    {
-        const int pageSize = 10;
-        var pokemons = user.PokemonList;
-        int page = 0;
-        int totalPages = (pokemons.Count + pageSize - 1) / pageSize;
-        var selected = new List<Pokemon>();
-
-        while (selected.Count < PokemonTeam.MaxTeamSize)
-        {
-            Console.WriteLine();
-            _console.WriteLine($"Page {page + 1}/{totalPages}:");
-
-            var pagePokemon = pokemons.Skip(page * pageSize).Take(pageSize).ToList();
-
-            for (int i = 0; i < pagePokemon.Count; i++)
-            {
-                var pkmn = pagePokemon[i];
-                _console.WriteLine($"{i + 1}. {pkmn.Name} ({pkmn.FirstType}" + (pkmn.SecondType.HasValue ? $"/{pkmn.SecondType}" : "") + $", LV: {pkmn.Level})");
-            }
-
-            _console.WriteLine("Type 'n' for next page, 'p' for previous page.\n");
-            _console.WriteLine($"Type 'done' when you're finished selecting Pokémon (1 to {PokemonTeam.MaxTeamSize}).");
-            _console.WriteLine($"Current team: {string.Join(", ", selected.Select(p => p.Name))}\n");
-            _console.WriteLine("Select Pokémon by number:");
-
-            string? input = _console.ReadLine();
-            if (string.Equals(input, _abortCommand, StringComparison.OrdinalIgnoreCase)) return null;
-
-            if (string.Equals(input, "done", StringComparison.OrdinalIgnoreCase))
-            {
-                if (selected.Count >= 1) break;
-                _console.WriteLine("You must select at least one Pokémon.");
-                continue;
-            }
-
-            if (string.Equals(input, "n", StringComparison.OrdinalIgnoreCase))
-            {
-                if (page < totalPages - 1)
-                {
-                    page++;
-                }
-                else
-                {
-                    _console.WriteLine("You are already on the last page.");
-                }
-                continue;
-            }
-
-            if (string.Equals(input, "p", StringComparison.OrdinalIgnoreCase))
-            {
-                if (page > 0)
-                {
-                    page--;
-                }
-                else
-                {
-                    _console.WriteLine("You are already on the first page.");
-                }
-                continue;
-            }
-
-            if (int.TryParse(input, out int index) && index >= 1 && index <= pagePokemon.Count)
-            {
-                var selectedPokemon = pagePokemon[index - 1];
-
-                selected.Add(selectedPokemon);
-                _console.WriteLine($"Added: {selectedPokemon.Name}");
-            }
-            else
-            {
-                _console.WriteLine("Invalid input. Please enter a valid number or command.");
-            }
-        }
-
-        return selected;
-    }
-
 
     public static void LoadDefaults(User user)
     {

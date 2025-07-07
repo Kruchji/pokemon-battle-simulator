@@ -21,7 +21,7 @@ public static class AIStrategies
                 return battleMove;
             }
         }
-        throw new InvalidOperationException("No valid moves available for this Pokemon.");  // TODO: Maybe add own exceptions?
+        throw new InvalidOperationException("No valid moves available for this Pokemon."); // Strategies are not invoked when all moves are invalid
     }
 
     // Strategy returning a random move
@@ -36,7 +36,7 @@ public static class AIStrategies
 
         if (availableMoves.Count == 0)
         {
-            throw new InvalidOperationException("No valid moves available for this Pokemon."); // TODO: Maybe add own exceptions?
+            throw new InvalidOperationException("No valid moves available for this Pokemon."); // Strategies are not invoked when all moves are invalid
         }
 
         int randomIndex = random.Next(availableMoves.Count);
@@ -67,7 +67,7 @@ public static class AIStrategies
         // If no move picked
         if (bestMove == null)
         {
-            throw new InvalidOperationException("No valid moves available for this Pokemon.");      // TODO: Maybe add own exceptions?
+            throw new InvalidOperationException("No valid moves available for this Pokemon.");  // Strategies are not invoked when all moves are invalid
         }
 
         return bestMove; // Return the most effective move found
