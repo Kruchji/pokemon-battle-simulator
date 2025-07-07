@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace PokemonBattleSimulator;
 
 internal class User
 {
+    [JsonInclude]   // Needed as setter is private
     public List<Pokemon> PokemonList { get; private set; } = new List<Pokemon>();
+
+    [JsonInclude]
     public List<PokemonTeam> PokemonTeams { get; private set; } = new List<PokemonTeam>();
 
+    [JsonInclude]
     public List<Move> Moves { get; private set; } = new List<Move>();
 
     public void AddPokemon(Pokemon pokemon)
@@ -61,5 +66,14 @@ internal class User
         PokemonList.Clear();
         PokemonTeams.Clear();
         Moves.Clear();
+    }
+
+    public void CopyFrom(User other)
+    {
+        if (other == null) throw new ArgumentNullException(nameof(other), "Other user cannot be null.");
+        
+        PokemonList = new List<Pokemon>(other.PokemonList);
+        PokemonTeams = new List<PokemonTeam>(other.PokemonTeams);
+        Moves = new List<Move>(other.Moves);
     }
 }

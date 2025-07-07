@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace PokemonBattleSimulator;
 
@@ -17,6 +18,25 @@ public class PokemonTeam
         }
         PokemonList[0] = firstPokemon;
     }
+
+    [JsonConstructor] // Needed for deserialization
+    public PokemonTeam(string name, Pokemon[] pokemonList)
+    {
+        Name = name ?? throw new ArgumentNullException(nameof(name), "Team name cannot be null.");
+        if (pokemonList == null || pokemonList.Length != MaxTeamSize)
+        {
+            throw new ArgumentException($"Pokemon list must contain exactly {MaxTeamSize} Pokemon.", nameof(pokemonList));
+        }
+        for (int i = 0; i < MaxTeamSize; i++)
+        {
+            if (i == 0 && pokemonList[i] == null)
+            {
+                throw new ArgumentNullException(nameof(pokemonList), "First Pokemon cannot be null.");
+            }
+            PokemonList[i] = pokemonList[i];
+        }
+    }
+
     public void AddPokemon(int index, Pokemon pokemon)
     {
         if (index < 0 || index >= MaxTeamSize)

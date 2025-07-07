@@ -11,12 +11,12 @@ public record Move
     public int PP { get; private set; }
     public MoveCategory Category { get; private set; }
 
-    public Move(string name, int power, int accuracy, int pp, PokemonType type, MoveCategory category)
+    public Move(string name, int power, int accuracy, int pp, PokemonType moveType, MoveCategory category)
     {
         Name = name;
         Power = power;
         Accuracy = accuracy;
-        MoveType = type;
+        MoveType = moveType;
         PP = pp;
         Category = category;
     }

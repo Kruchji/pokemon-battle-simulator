@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace PokemonBattleSimulator;
 
@@ -16,7 +17,7 @@ public record Pokemon
     public int SpecialDefense { get; private set; }
 
     public static readonly int NumberOfMoves = 4;
-    public Move[] Moves { get; private set; } = new Move[NumberOfMoves];    // TODO: Ensure that first move is always not null
+    public Move[] Moves { get; private set; } = new Move[NumberOfMoves];
     public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, Move firstMove, PokemonType firstType, PokemonType? secondType = null)
     {
         Name = name;
@@ -30,6 +31,34 @@ public record Pokemon
         FirstType = firstType;
         SecondType = secondType;
         Moves[0] = firstMove ?? throw new ArgumentNullException(nameof(firstMove), "First move cannot be null.");
+    }
+
+    [JsonConstructor] // Needed for deserialization
+    public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, Move[] moves, PokemonType firstType, PokemonType? secondType = null)
+    {
+        Name = name ?? throw new ArgumentNullException(nameof(name), "Pokemon name cannot be null.");
+        Level = level;
+        Health = health;
+        Attack = attack;
+        Defense = defense;
+        Speed = speed;
+        SpecialAttack = specialAttack;
+        SpecialDefense = specialDefense;
+        FirstType = firstType;
+        SecondType = secondType;
+        if (moves == null || moves.Length != NumberOfMoves)
+        {
+            throw new ArgumentException($"Moves array must contain exactly {NumberOfMoves} moves.", nameof(moves));
+        }
+        
+        for (int i = 0; i < NumberOfMoves; i++)
+        {
+            if (i == 0 && moves[i] == null)
+            {
+                throw new ArgumentNullException(nameof(moves), "First move cannot be null.");
+            }
+            Moves[i] = moves[i];
+        }
     }
 
     public void SetMove(int index, Move move)
