@@ -15,13 +15,13 @@ internal static class BuildManager
         string name = Prompts.PromptUntilValid("Enter move name:", s => !string.IsNullOrWhiteSpace(s), "Name cannot be empty.");
         if (name == null) return;
 
-        int? power = Prompts.PromptUntilValid("Enter move power (0-250):", Parsers.TryParseIntInRange(0, 250), "Power must be a number between 0 and 250.");
+        int? power = Prompts.PromptUntilValidInt("Enter move power (0-250):", Parsers.TryParseIntInRange(0, 250), "Power must be a number between 0 and 250.");
         if (power == null) return;
 
-        int? accuracy = Prompts.PromptUntilValid("Enter move accuracy (1-100):", Parsers.TryParseIntInRange(1, 100), "Accuracy must be between 1 and 100.");
+        int? accuracy = Prompts.PromptUntilValidInt("Enter move accuracy (1-100):", Parsers.TryParseIntInRange(1, 100), "Accuracy must be between 1 and 100.");
         if (accuracy == null) return;
 
-        int? pp = Prompts.PromptUntilValid("Enter move PP (1-40):", Parsers.TryParseIntInRange(1, 40), "PP must be between 1 and 40.");
+        int? pp = Prompts.PromptUntilValidInt("Enter move PP (1-40):", Parsers.TryParseIntInRange(1, 40), "PP must be between 1 and 40.");
         if (pp == null) return;
 
         PokemonType? moveType = Prompts.PromptEnum<PokemonType>("Enter move type (e.g., Fire, Water):");
@@ -54,25 +54,25 @@ internal static class BuildManager
 
         // Define stats
 
-        int? level = Prompts.PromptUntilValid("Enter level (1-100):", Parsers.TryParseIntInRange(1, 100), "Level must be between 1 and 100.");
+        int? level = Prompts.PromptUntilValidInt("Enter level (1-100):", Parsers.TryParseIntInRange(1, 100), "Level must be between 1 and 100.");
         if (level == null) return;
 
-        int? health = Prompts.PromptUntilValid("Enter health (1-999):", Parsers.TryParseIntInRange(1, 999), "Health must be between 1 and 999.");
+        int? health = Prompts.PromptUntilValidInt("Enter health (1-999):", Parsers.TryParseIntInRange(1, 999), "Health must be between 1 and 999.");
         if (health == null) return;
 
-        int? attack = Prompts.PromptUntilValid("Enter attack (1-999):", Parsers.TryParseIntInRange(1, 999), "Attack must be between 1 and 999.");
+        int? attack = Prompts.PromptUntilValidInt("Enter attack (1-999):", Parsers.TryParseIntInRange(1, 999), "Attack must be between 1 and 999.");
         if (attack == null) return;
 
-        int? defense = Prompts.PromptUntilValid("Enter defense (1-999):", Parsers.TryParseIntInRange(1, 999), "Defense must be between 1 and 999.");
+        int? defense = Prompts.PromptUntilValidInt("Enter defense (1-999):", Parsers.TryParseIntInRange(1, 999), "Defense must be between 1 and 999.");
         if (defense == null) return;
 
-        int? speed = Prompts.PromptUntilValid("Enter speed (1-999):", Parsers.TryParseIntInRange(1, 999), "Speed must be between 1 and 999.");
+        int? speed = Prompts.PromptUntilValidInt("Enter speed (1-999):", Parsers.TryParseIntInRange(1, 999), "Speed must be between 1 and 999.");
         if (speed == null) return;
 
-        int? spAttack = Prompts.PromptUntilValid("Enter special attack (1-999):", Parsers.TryParseIntInRange(1, 999), "Special Attack must be between 1 and 999.");
+        int? spAttack = Prompts.PromptUntilValidInt("Enter special attack (1-999):", Parsers.TryParseIntInRange(1, 999), "Special Attack must be between 1 and 999.");
         if (spAttack == null) return;
 
-        int? spDefense = Prompts.PromptUntilValid("Enter special defense (1-999):", Parsers.TryParseIntInRange(1, 999), "Special Defense must be between 1 and 999.");
+        int? spDefense = Prompts.PromptUntilValidInt("Enter special defense (1-999):", Parsers.TryParseIntInRange(1, 999), "Special Defense must be between 1 and 999.");
         if (spDefense == null) return;
 
         // Define types

@@ -6,10 +6,16 @@ internal sealed class MainController : IController
 {
     private static readonly string _consolePrefix = "MainMenu> ";
     private readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
+    private bool _firstRun = true;
     public void Run(User user)
     {
-        Console.WriteLine();
+        if (!_firstRun)
+        {
+            Console.WriteLine();
+        }
+        _firstRun = false;
         _console.WriteLine("Welcome to the Pokemon Battle Simulator!\n");
+
         while (true)
         {
             _console.WriteLine("Type 'build' manage your Moves and Pokemon, 'battle' to start a battle, or 'exit' to quit the application.\n");

@@ -78,7 +78,7 @@ public class BattlePokemon
         // If all moves have no PP left, use fallback move
         if (BattleMoves.All(battleMove => battleMove.CurrentPP <= 0))
         {
-            return FallbackMove;        // TODO: test this behavior
+            return FallbackMove;
         }
 
         // Use the AI strategy to determine the next move

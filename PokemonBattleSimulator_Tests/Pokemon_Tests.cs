@@ -2,6 +2,9 @@ namespace PokemonBattleSimulator_Tests;
 
 using PokemonBattleSimulator;
 
+// TODO: Test the fallback move behavior
+// TODO: Test type effectiveness calculations
+
 public class Pokemon_Tests
 {
     [Fact]

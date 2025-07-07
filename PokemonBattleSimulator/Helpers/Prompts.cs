@@ -22,7 +22,7 @@ internal static class Prompts
     }
 
     // For int validation and parsing
-    public static int? PromptUntilValid(string prompt, Func<string, (bool success, int value)> parser, string errorMessage)
+    public static int? PromptUntilValidInt(string prompt, Func<string, (bool success, int value)> parser, string errorMessage)
     {
         while (true)
         {
@@ -63,8 +63,6 @@ internal static class Prompts
             _console.WriteLine("Invalid choice. Try again.");
         }
     }
-
-    // TODO: Maybe put two methods below together?
 
     public static List<Move>? PromptMoveSelection(User user)
     {
@@ -171,9 +169,10 @@ internal static class Prompts
             _console.WriteLine("Type 'n' for next page, 'p' for previous page.\n");
             _console.WriteLine($"Type 'done' when you're finished selecting Pokémon (1 to {PokemonTeam.MaxTeamSize}).");
             _console.WriteLine($"Current team: {string.Join(", ", selected.Select(p => p.Name))}\n");
-            _console.WriteLine("Select Pokémon by number:");
 
+            _console.WriteLine("Select Pokémon by number:");
             string? input = _console.ReadLine();
+
             if (string.Equals(input, AbortCommand, StringComparison.OrdinalIgnoreCase)) return null;
 
             if (string.Equals(input, "done", StringComparison.OrdinalIgnoreCase))

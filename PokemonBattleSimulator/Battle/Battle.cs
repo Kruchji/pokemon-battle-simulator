@@ -6,48 +6,10 @@ namespace PokemonBattleSimulator;
 
 internal static class Battle
 {
-    private static readonly double _criticalHitChance = 1 / 24; // ≈4.17% (Gen VII onwards)
-    private static readonly double _criticalHitMultiplier = 1.5; // Critical hit damage multiplier (Gen VI onwards)
-    private static readonly double _stabMultiplier = 1.5; // Same Type Attack Bonus (STAB) multiplier
-
+    public static readonly string ConsolePrefix = "Battle> ";   // Used in Battle Controller
     private static readonly Random _randomGenerator = new Random();
 
-    private static int CalculateDamage(Pokemon attacker, Pokemon defender, Move move)
-    {
-        if (attacker == null) throw new ArgumentNullException(nameof(attacker), "Attacker cannot be null.");
-        if (defender == null) throw new ArgumentNullException(nameof(defender), "Defender cannot be null.");
-        if (move == null) throw new ArgumentNullException(nameof(move), "Move cannot be null.");
-
-        // Base damage calculation formula
-        double damage = ((2 * attacker.Level / 5 + 2) * move.Power * attacker.Attack / defender.Defense) / 50 + 2;
-
-        // Critical hit check
-        bool isCriticalHit = _randomGenerator.NextDouble() < _criticalHitChance;
-        if (isCriticalHit)
-        {
-            damage *= _criticalHitMultiplier;
-        }
-
-        // Random factor
-        double randomFactor = 0.85 + _randomGenerator.NextDouble() * 0.15; // Random factor between 0.85 and 1.00
-        damage *= randomFactor;
-
-        // STAB (Same Type Attack Bonus) check
-        if (attacker.FirstType == move.MoveType || (attacker.SecondType.HasValue && attacker.SecondType.Value == move.MoveType))
-        {
-            damage *= _stabMultiplier;
-        }
-
-        // Type effectiveness calculation
-        double typeEffectiveness = TypeCalculator.GetMoveEffectiveness(move, defender);
-        damage *= typeEffectiveness;
-
-
-        return (int)Math.Max(damage, 1); // Ensure damage is at least 1
-    }
-
-    // Returns true if the battle ended (one Pokemon fainted), otherwise false
-    private static TurnResult SimulateOneTurn(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? prefConsole = null)
+    public static TurnResult SimulateOneTurn(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? prefConsole = null)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
         if (secondPokemon == null) throw new ArgumentNullException(nameof(secondPokemon), "Second Pokemon cannot be null.");
@@ -82,7 +44,7 @@ internal static class Battle
         if (_randomGenerator.NextDouble() < (double)fasterBattleMove.Move.Accuracy / 100)
         {
             // Calculate and apply damage to slower
-            int damageToSlower = CalculateDamage(fasterPokemon.Pokemon, slowerPokemon.Pokemon, fasterBattleMove.Move);
+            int damageToSlower = DamageCalculator.CalculateDamage(fasterPokemon.Pokemon, slowerPokemon.Pokemon, fasterBattleMove.Move);
             slowerPokemon.TakeDamage(damageToSlower);
 
             prefConsole?.WriteLine($"{slowerPokemon.Name} took {damageToSlower} damage.");
@@ -104,7 +66,7 @@ internal static class Battle
         if (_randomGenerator.NextDouble() < (double)slowerBattleMove.Move.Accuracy / 100)
         {
             // Calculate and apply damage to faster
-            int damageToFaster = CalculateDamage(slowerPokemon.Pokemon, fasterPokemon.Pokemon, slowerBattleMove.Move);
+            int damageToFaster = DamageCalculator.CalculateDamage(slowerPokemon.Pokemon, fasterPokemon.Pokemon, slowerBattleMove.Move);
             fasterPokemon.TakeDamage(damageToFaster);
 
             prefConsole?.WriteLine($"{fasterPokemon.Name} took {damageToFaster} damage.");
@@ -118,7 +80,6 @@ internal static class Battle
 
         return TurnResult.BattleOngoing; // Both Pokemon are still standing
     }
-
 
     public static BattleResult SimulateBattle(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? prefConsole = null)
     {
@@ -144,14 +105,14 @@ internal static class Battle
         {
             prefConsole?.WriteLine($"");
             prefConsole?.WriteLine($"{firstPokemon.Name} fainted!");
-            prefConsole?.WriteLine($"{secondPokemon.Name} won the battle!");
+            prefConsole?.WriteLine($"{secondPokemon.Name} won the battle!\n");
             return BattleResult.SecondPlayerWin; // Second Pokemon won
         }
         else if (secondPokemon.Fainted && !firstPokemon.Fainted)
         {
             prefConsole?.WriteLine($"");
             prefConsole?.WriteLine($"{secondPokemon.Name} fainted!");
-            prefConsole?.WriteLine($"{firstPokemon.Name} won the battle!");
+            prefConsole?.WriteLine($"{firstPokemon.Name} won the battle!\n");
             return BattleResult.FirstPlayerWin; // First Pokemon won
         }
         else
@@ -239,12 +200,12 @@ internal static class Battle
         // Determine the winner
         if (firstTeam.AllPokemonFainted && !secondTeam.AllPokemonFainted)
         {
-            prefConsole?.WriteLine($"Team {firstTeam.Name} has no Pokemon left! Team {secondTeam.Name} wins!");
+            prefConsole?.WriteLine($"Team {firstTeam.Name} has no Pokemon left! Team {secondTeam.Name} wins!\n");
             return BattleResult.SecondPlayerWin; // Second team won
         }
         else if (secondTeam.AllPokemonFainted && !firstTeam.AllPokemonFainted)
         {
-            prefConsole?.WriteLine($"Team {secondTeam.Name} has no Pokemon left! Team {firstTeam.Name} team wins!");
+            prefConsole?.WriteLine($"Team {secondTeam.Name} has no Pokemon left! Team {firstTeam.Name} team wins!\n");
             return BattleResult.FirstPlayerWin; // First team won
         }
         else
