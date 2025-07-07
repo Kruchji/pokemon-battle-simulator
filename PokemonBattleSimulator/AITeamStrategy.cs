@@ -20,7 +20,7 @@ public static class AITeamStrategies
                 return battlePokemon;
             }
         }
-        
+
         throw new InvalidOperationException("No valid Pokemon available in the team.");
     }
 

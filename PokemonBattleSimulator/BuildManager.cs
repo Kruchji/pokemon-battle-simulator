@@ -83,7 +83,7 @@ internal static class BuildManager
         PokemonType? firstType = PromptEnum<PokemonType>("Enter first type:");
         if (firstType == null) return;
 
-        (PokemonType? secondType, bool emptySecondType)  = PromptEnumOptional<PokemonType>("Enter second type (or press Enter to skip):");
+        (PokemonType? secondType, bool emptySecondType) = PromptEnumOptional<PokemonType>("Enter second type (or press Enter to skip):");
         if (secondType == null && !emptySecondType) return;
 
         // Move selection

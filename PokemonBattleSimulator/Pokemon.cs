@@ -50,7 +50,7 @@ public record Pokemon
         {
             throw new ArgumentException($"Moves array must contain exactly {NumberOfMoves} moves.", nameof(moves));
         }
-        
+
         for (int i = 0; i < NumberOfMoves; i++)
         {
             if (i == 0 && moves[i] == null)

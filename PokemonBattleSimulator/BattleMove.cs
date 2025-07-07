@@ -14,10 +14,11 @@ public class BattleMove
         if (move == null)
         {
             CurrentPP = 0; // If move is null, set PP to 0
-        } else
+        }
+        else
         {
             CurrentPP = move.PP; // Initialize with full PP
-        } 
+        }
     }
 
     public BattleMove(BattleMove other)

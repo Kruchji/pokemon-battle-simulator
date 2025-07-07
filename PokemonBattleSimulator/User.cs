@@ -71,7 +71,7 @@ internal class User
     public void CopyFrom(User other)
     {
         if (other == null) throw new ArgumentNullException(nameof(other), "Other user cannot be null.");
-        
+
         PokemonList = new List<Pokemon>(other.PokemonList);
         PokemonTeams = new List<PokemonTeam>(other.PokemonTeams);
         Moves = new List<Move>(other.Moves);

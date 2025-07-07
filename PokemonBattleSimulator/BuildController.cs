@@ -136,10 +136,12 @@ internal class BuildController : IController
         {
             File.WriteAllText(_userDataFile, json);
             _console.WriteLine($"User data saved successfully to '{_userDataFile}'.");
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             _console.WriteLine($"IO error while saving user data: {ex.Message}");
-        } catch (UnauthorizedAccessException ex)
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _console.WriteLine($"Permission error saving user data: {ex.Message}");
         }
@@ -157,11 +159,13 @@ internal class BuildController : IController
             try
             {
                 jsonData = File.ReadAllText(_userDataFile);
-            } catch (IOException ex)
+            }
+            catch (IOException ex)
             {
                 _console.WriteLine($"IO error while reading user data: {ex.Message}");
                 return;
-            } catch (UnauthorizedAccessException ex)
+            }
+            catch (UnauthorizedAccessException ex)
             {
                 _console.WriteLine($"Permission error reading user data: {ex.Message}");
                 return;
@@ -171,7 +175,8 @@ internal class BuildController : IController
             try
             {
                 deserializedUser = JsonSerializer.Deserialize<User>(jsonData)!;
-            } catch (JsonException ex)
+            }
+            catch (JsonException ex)
             {
                 _console.WriteLine($"Invalid JSON format of data file: {ex.Message}");
                 return;
@@ -186,9 +191,10 @@ internal class BuildController : IController
             {
                 _console.WriteLine("Failed to deserialize user data. Please check the file format.");
             }
-        } else
+        }
+        else
         {
             _console.WriteLine($"No user data found. Check if '{_userDataFile}' exists in the current directory.");
         }
-    }   
+    }
 }
