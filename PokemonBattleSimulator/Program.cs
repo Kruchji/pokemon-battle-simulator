@@ -2,7 +2,7 @@
 
 internal class Program
 {
-    static void Main(string[] args)     // TODO: Take file to load Pokemon data from command line arguments
+    static void Main(string[] args)
     {
         // TODO: Implement main logic for the Pokemon Battle Simulator.
 

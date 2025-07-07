@@ -12,11 +12,7 @@ public class PokemonTeam
     public PokemonTeam(string name, Pokemon firstPokemon)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name), "Team name cannot be null.");
-        if (firstPokemon == null)
-        {
-            throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
-        }
-        PokemonList[0] = firstPokemon;
+        PokemonList[0] = firstPokemon ?? throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
     }
 
     [JsonConstructor] // Needed for deserialization
@@ -47,7 +43,7 @@ public class PokemonTeam
         {
             throw new ArgumentNullException(nameof(pokemon), "First Pokemon cannot be null.");
         }
-        PokemonList[index] = pokemon;
+        PokemonList[index] = pokemon!;
     }
     public override string ToString()
     {

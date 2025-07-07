@@ -72,6 +72,6 @@ public record Pokemon
             throw new ArgumentNullException(nameof(move), "First move cannot be null.");
         }
 
-        Moves[index] = move;
+        Moves[index] = move!;
     }
 }

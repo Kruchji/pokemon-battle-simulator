@@ -8,6 +8,7 @@ internal class BuildController : IController
     private static readonly string _consolePrefix = "BuildMenu> ";
     private readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     private static readonly string _userDataFile = "user.json";
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
 
     public void Run(User user)
     {
@@ -102,7 +103,7 @@ internal class BuildController : IController
                 page++;
             else if (input == "p" && page > 0)
                 page--;
-            else if (input.StartsWith("delete") && onDelete != null)
+            else if (input != null && input.StartsWith("delete") && onDelete != null)
             {
                 var parts = input.Split(' ');
                 if (parts.Length == 2 && int.TryParse(parts[1], out int index))
@@ -130,7 +131,7 @@ internal class BuildController : IController
 
     private void SerializeUserData(User user)
     {
-        string json = JsonSerializer.Serialize(user, new JsonSerializerOptions { WriteIndented = true });
+        string json = JsonSerializer.Serialize(user, _jsonSerializerOptions);
 
         try
         {

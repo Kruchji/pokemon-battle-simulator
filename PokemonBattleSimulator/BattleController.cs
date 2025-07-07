@@ -94,7 +94,7 @@ internal class BattleController : IController
 
     // TODO: Refactor to move to BattleManager similar to BuildController
 
-    private BattlePokemon? SelectPokemonWithStrategy(List<Pokemon> available, string label)
+    private static BattlePokemon? SelectPokemonWithStrategy(List<Pokemon> available, string label)
     {
         _console.WriteLine($"Select {label} Pokémon:");
         var index = SelectFromPaginatedList(available.Select(p => p.Name).ToList(), $"{label} Pokémon");
@@ -111,7 +111,7 @@ internal class BattleController : IController
         );
     }
 
-    private BattlePokemonTeam? SelectTeamWithStrategies(List<PokemonTeam> available, string label)
+    private static BattlePokemonTeam? SelectTeamWithStrategies(List<PokemonTeam> available, string label)
     {
         _console.WriteLine($"Select {label} Team:");
         var index = SelectFromPaginatedList(available.Select(t => t.Name).ToList(), $"{label} Team");
@@ -159,7 +159,7 @@ internal class BattleController : IController
         };
     }
 
-    private List<MethodInfo> GetStrategyMethods(Type strategyClass, Type delegateType)
+    private static List<MethodInfo> GetStrategyMethods(Type strategyClass, Type delegateType)
     {
         return strategyClass
             .GetMethods(BindingFlags.Static | BindingFlags.Public)
@@ -178,24 +178,24 @@ internal class BattleController : IController
             .ToList();
     }
 
-    private MethodInfo? SelectStrategyMethod(List<MethodInfo> methods, string title)
+    private static MethodInfo? SelectStrategyMethod(List<MethodInfo> methods, string title)
     {
         var names = methods.Select(m => m.Name).ToList();
         int? index = SelectFromPaginatedList(names, title);
         return index.HasValue ? methods[index.Value] : null;
     }
 
-    private AIStrategy CreateAIStrategyDelegate(MethodInfo method)
+    private static AIStrategy CreateAIStrategyDelegate(MethodInfo method)
     {
         return (AIStrategy)Delegate.CreateDelegate(typeof(AIStrategy), method);
     }
 
-    private AITeamStrategy CreateAITeamStrategyDelegate(MethodInfo method)
+    private static AITeamStrategy CreateAITeamStrategyDelegate(MethodInfo method)
     {
         return (AITeamStrategy)Delegate.CreateDelegate(typeof(AITeamStrategy), method);
     }
 
-    private int? SelectFromPaginatedList(List<string> items, string title)
+    private static int? SelectFromPaginatedList(List<string> items, string title)
     {
         const int pageSize = 10;
         if (items.Count == 0)
