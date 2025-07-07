@@ -6,5 +6,5 @@ public enum MoveCategory
 {
     Physical,
     Special,
-    Status      // TODO: May be removed for simplicity
+    // Status      // Ommited as basic simulator does not support status effects
 }
