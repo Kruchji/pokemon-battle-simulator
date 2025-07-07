@@ -21,7 +21,8 @@ internal class BuildController : IController
             _console.WriteLine("Type 'back' to return to the main menu.");
             _console.WriteLine("Type 'newM', 'newP', 'newT' to create a new Move, Pokemon or Team respectively.");
             _console.WriteLine("Type 'listM', 'listP', 'listT' to view paginated list of your Moves, Pokemon or Teams respectively.");
-            _console.WriteLine("Type 'defaults' to load default Pokemon and Moves.\n");
+            _console.WriteLine("Type 'defaults' to load default data and 'clear' to clear all data.");
+            _console.WriteLine("Type 'save' to save your data to a JSON and 'load' to load data from that file.\n");
 
             var userInput = _console.ReadLine()?.Trim().ToLower();
 
