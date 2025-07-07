@@ -29,6 +29,33 @@ internal class User
         Moves.Add(move);
     }
 
+    public void RemovePokemon(int index)
+    {
+        if (index < 0 || index >= PokemonList.Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index), "Index must be within the bounds of the Pokemon list.");
+        }
+        PokemonList.RemoveAt(index);
+    }
+
+    public void RemovePokemonTeam(int index)
+    {
+        if (index < 0 || index >= PokemonTeams.Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index), "Index must be within the bounds of the Pokemon teams list.");
+        }
+        PokemonTeams.RemoveAt(index);
+    }
+
+    public void RemoveMove(int index)
+    {
+        if (index < 0 || index >= Moves.Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index), "Index must be within the bounds of the Moves list.");
+        }
+        Moves.RemoveAt(index);
+    }
+
     public void ClearAllData()
     {
         PokemonList.Clear();

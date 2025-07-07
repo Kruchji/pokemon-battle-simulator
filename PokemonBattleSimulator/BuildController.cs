@@ -35,18 +35,22 @@ internal class BuildController : IController
                     BuildManager.CreatePokemonTeam(user);
                     break;
                 case "listm":
-                    PaginateList(user.Moves.Select(m => $"{m.Name} ({m.MoveType}, {m.Category}, ATK: {m.Power}, ACC: {m.Accuracy}, PP: {m.PP})").ToList(), "Moves");
+                    PaginateList(user.Moves.Select(m => $"{m.Name} ({m.MoveType}, {m.Category}, ATK: {m.Power}, ACC: {m.Accuracy}, PP: {m.PP})").ToList(), "Moves", idx => user.RemoveMove(idx));
                     break;
                 case "listp":
-                    PaginateList(user.PokemonList.Select(p => $"{p.Name} ({p.FirstType}" + (p.SecondType.HasValue ? $"/{p.SecondType}" : "") + $", LV: {p.Level})").ToList(), "Pokemon");
+                    PaginateList(user.PokemonList.Select(p => $"{p.Name} ({p.FirstType}" + (p.SecondType.HasValue ? $"/{p.SecondType}" : "") + $", LV: {p.Level})").ToList(), "Pokemon", idx => user.RemovePokemon(idx));
                     break;
                 case "listt":
-                    PaginateList(user.PokemonTeams.Select(t => $"{t.Name} (Contains: " + string.Join(", ", t.PokemonList.Select(p => p?.Name ?? "empty")) + ")").ToList(), "Pokemon Teams");
+                    PaginateList(user.PokemonTeams.Select(t => $"{t.Name} (Contains: " + string.Join(", ", t.PokemonList.Select(p => p?.Name ?? "empty")) + ")").ToList(), "Pokemon Teams", idx => user.RemovePokemonTeam(idx));
                     break;
                 case "defaults":
                     _console.WriteLine("Loading default Pokemon and Moves...");
                     BuildManager.LoadDefaults(user);
                     _console.WriteLine("Default Pokemon and Moves loaded successfully.");
+                    break;
+                case "clear":
+                    _console.WriteLine("Clearing all data...");
+                    user.ClearAllData();
                     break;
                 default:
                     _console.WriteLine("Invalid command. Please type 'back' to return to the main menu.\n");
@@ -55,7 +59,7 @@ internal class BuildController : IController
         }
     }
 
-    private void PaginateList(List<string> items, string title)
+    private void PaginateList(List<string> items, string title, Action<int>? onDelete = null)
     {
         const int pageSize = 10;
         if (items.Count == 0)
@@ -79,12 +83,37 @@ internal class BuildController : IController
 
             Console.WriteLine();
             _console.WriteLine("Type 'n' for next page, 'p' for previous, 'q' to quit.");
+            if (onDelete != null)
+                _console.WriteLine("Type 'delete (number)' to remove an item.");
             string? input = _console.ReadLine()?.Trim().ToLower();
             if (input == "q") break;
             else if (input == "n" && (page + 1) * pageSize < items.Count)
                 page++;
             else if (input == "p" && page > 0)
                 page--;
+            else if (input.StartsWith("delete") && onDelete != null)
+            {
+                var parts = input.Split(' ');
+                if (parts.Length == 2 && int.TryParse(parts[1], out int index))
+                {
+                    int absoluteIndex = page * pageSize + index - 1;
+                    if (absoluteIndex >= 0 && absoluteIndex < items.Count)
+                    {
+                        onDelete(absoluteIndex);
+                        items.RemoveAt(absoluteIndex);
+                        totalPages = (int)Math.Ceiling((double)items.Count / pageSize);
+                        if (page >= totalPages) page = Math.Max(0, totalPages - 1);
+                    }
+                    else
+                    {
+                        _console.WriteLine("Invalid index.");
+                    }
+                }
+                else
+                {
+                    _console.WriteLine("Invalid delete command. Use: delete {number}");
+                }
+            }
         }
     }
 }
