@@ -377,7 +377,7 @@ internal static class BuildManager
     {
         user.ClearAllData();
 
-        // TODO: Create some default Pokemon (with real stats) and Moves (and add to Pokemon) and add them to the user
+        // Create some default Pokemon and Moves
         var thunderbolt = new Move("Thunderbolt", 90, 100, 15, PokemonType.Electric, MoveCategory.Special);
         var flamethrower = new Move("Flamethrower", 90, 100, 15, PokemonType.Fire, MoveCategory.Special);
         var vineWhip = new Move("Vine Whip", 45, 100, 25, PokemonType.Grass, MoveCategory.Physical);
@@ -396,16 +396,32 @@ internal static class BuildManager
 
         bulbasaur.SetMove(1, vineWhip);
 
-        // TODO: Include more teams in defaults
+        // Create some default teams
         var starterTeam = new PokemonTeam("Starter Team", pikachu);
         starterTeam.AddPokemon(1, charmander);
         starterTeam.AddPokemon(2, bulbasaur);
+
+        var bulbasaurTeam = new PokemonTeam("Bulbasaur Team", bulbasaur);
+        bulbasaurTeam.AddPokemon(1, bulbasaur);
+        bulbasaurTeam.AddPokemon(2, bulbasaur);
+        bulbasaurTeam.AddPokemon(3, bulbasaur);
+        bulbasaurTeam.AddPokemon(4, bulbasaur);
+        bulbasaurTeam.AddPokemon(5, bulbasaur);
+
+        var charmanderTeam = new PokemonTeam("Charmander Team", charmander);
+        charmanderTeam.AddPokemon(1, charmander);
+        charmanderTeam.AddPokemon(2, charmander);
+        charmanderTeam.AddPokemon(3, charmander);
+        charmanderTeam.AddPokemon(4, charmander);
+        charmanderTeam.AddPokemon(5, charmander);
 
         user.AddPokemon(pikachu);
         user.AddPokemon(charmander);
         user.AddPokemon(bulbasaur);
 
         user.AddPokemonTeam(starterTeam);
+        user.AddPokemonTeam(bulbasaurTeam);
+        user.AddPokemonTeam(charmanderTeam);
 
         user.AddMove(thunderbolt);
         user.AddMove(flamethrower);
