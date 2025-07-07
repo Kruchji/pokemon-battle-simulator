@@ -1,4 +1,4 @@
-namespace PokemonBattleSimulator_Tests;
+namespace PokemonBattleSimulator.Tests;
 
 using PokemonBattleSimulator;
 

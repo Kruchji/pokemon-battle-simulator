@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.36105.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonBattleSimulator", "PokemonBattleSimulator\PokemonBattleSimulator.csproj", "{07A7CF64-4E4F-40D3-8A73-4EB26B832AC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonBattleSimulator_Tests", "PokemonBattleSimulator_Tests\PokemonBattleSimulator_Tests.csproj", "{1EAAEA36-B8C9-41F2-8867-9A7403FE3E33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonBattleSimulator.Tests", "PokemonBattleSimulator.Tests\PokemonBattleSimulator.Tests.csproj", "{1EAAEA36-B8C9-41F2-8867-9A7403FE3E33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
