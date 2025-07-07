@@ -6,7 +6,7 @@ public record Move
 {
     public string Name { get; private set; }
     public int Power { get; private set; }
-    public int Accuracy { get; private set; }   // TODO: check range, maybe change to float or double?
+    public int Accuracy { get; private set; }
     public PokemonType MoveType { get; private set; }
     public int PP { get; private set; }
     public MoveCategory Category { get; private set; }

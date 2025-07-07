@@ -7,6 +7,7 @@ internal class BattleController : IController
 {
     private static readonly string _consolePrefix = "BattleMenu> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
+    private static readonly int _maxNumberOfBattles = 100000; // Maximum number of battles for simulation
     public void Run(User user)
     {
         Console.WriteLine();
@@ -28,6 +29,8 @@ internal class BattleController : IController
             {
                 case "back":
                     return;
+
+                // Simple one-on-one battle
                 case "battle":
                     _console.WriteLine("Setting up a battle with your Pokemon...");
 
@@ -40,11 +43,12 @@ internal class BattleController : IController
                     _console.WriteLine($"Starting battle between {firstPokemon.Name} and {secondPokemon.Name}...");
                     Battle.SimulateBattle(firstPokemon, secondPokemon, _console);
                     break;
+
+                // Simulate many battles between two Pokemon
                 case "battlemany":
                     _console.WriteLine("Setting up many battles with your Pokemon...");
 
-                    // TODO: Test limits
-                    int battleCount = PromptUntilValid("Enter the number of battles to simulate:", TryParseIntInRange(1, 100000), "Please enter a valid number between 1 and 100000.");
+                    int battleCount = PromptUntilValid("Enter the number of battles to simulate:", TryParseIntInRange(1, _maxNumberOfBattles), "Please enter a valid number between 1 and 100000.");
 
                     var firstManyPokemon = SelectPokemonWithStrategy(user.PokemonList, "First");
                     if (firstManyPokemon == null) break;
@@ -58,6 +62,8 @@ internal class BattleController : IController
                     _console.WriteLine($"After {battleCount} battles: {firstManyPokemon.Name} won {firstWins} times, {secondManyPokemon.Name} won {secondWins} times.");
 
                     break;
+
+                // Classic Pokemon team battle
                 case "battleteam":
                     _console.WriteLine("Setting up a team battle with your Pokemon teams...");
 
@@ -70,10 +76,12 @@ internal class BattleController : IController
                     _console.WriteLine($"Starting team battle between {firstTeam.Name} and {secondTeam.Name}...");
                     Battle.SimulateTeamBattle(firstTeam, secondTeam, _console);
                     break;
+
+                // Simulate many team battles between two Pokemon teams
                 case "battleteammany":
                     _console.WriteLine("Setting up many team battles with your Pokemon teams...");
 
-                    int teamBattleCount = PromptUntilValid("Enter the number of battles to simulate:", TryParseIntInRange(1, 100000), "Please enter a valid number between 1 and 100000.");
+                    int teamBattleCount = PromptUntilValid("Enter the number of battles to simulate:", TryParseIntInRange(1, _maxNumberOfBattles), "Please enter a valid number between 1 and 100000.");
 
                     var firstManyTeam = SelectTeamWithStrategies(user.PokemonTeams, "First");
                     if (firstManyTeam == null) break;

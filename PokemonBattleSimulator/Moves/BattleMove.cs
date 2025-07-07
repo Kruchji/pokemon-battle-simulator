@@ -28,7 +28,7 @@ public class BattleMove
         CurrentPP = other.CurrentPP; // Copy the current PP
     }
 
-    public void UseMove()
+    public virtual void UseMove()
     {
         if (CurrentPP <= 0)
         {
