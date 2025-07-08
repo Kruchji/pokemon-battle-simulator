@@ -2,6 +2,9 @@
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Provides methods for user input validation and selection in the console application.
+/// </summary>
 internal static class Prompts
 {
     private static readonly string _consolePrefix = "Prompt> ";

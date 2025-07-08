@@ -2,6 +2,9 @@
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Represents a Pokemon (or Move) type.
+/// </summary>
 internal enum PokemonType
 {
     Normal,

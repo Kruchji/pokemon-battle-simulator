@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Represents a defined Pokemon with its attributes and moves.
+/// </summary>
 internal record Pokemon
 {
     public string Name { get; private set; }
@@ -16,6 +19,9 @@ internal record Pokemon
     public int Defense { get; private set; }
     public int SpecialDefense { get; private set; }
 
+    /// <summary>
+    /// Total number of moves a Pokemon can have.
+    /// </summary>
     public static readonly int NumberOfMoves = 4;
     public Move[] Moves { get; private set; } = new Move[NumberOfMoves];
     public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, Move firstMove, PokemonType firstType, PokemonType? secondType = null)
@@ -61,6 +67,13 @@ internal record Pokemon
         }
     }
 
+    /// <summary>
+    /// Sets a move at the specified index for the Pokemon.
+    /// </summary>
+    /// <param name="index">Index of the move to set (0-3).</param>
+    /// <param name="move">Move to set at the specified index.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Specified index is out of range (0-3).</exception>
+    /// <exception cref="ArgumentNullException">First move is null.</exception>
     public void SetMove(int index, Move move)
     {
         if (index < 0 || index >= NumberOfMoves)

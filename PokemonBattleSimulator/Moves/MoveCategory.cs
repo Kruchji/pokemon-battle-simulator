@@ -2,6 +2,9 @@
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Represents category of a Pokemon move.
+/// </summary>
 internal enum MoveCategory
 {
     Physical,

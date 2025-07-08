@@ -2,7 +2,9 @@
 
 namespace PokemonBattleSimulator;
 
-// Used for file operations to allow for easier testing and mocking
+/// <summary>
+/// Interface for file operations, allowing for easier testing and mocking. 
+/// </summary>
 internal interface IFileWrapper
 {
     void WriteAllText(string path, string content);
@@ -10,6 +12,9 @@ internal interface IFileWrapper
     string ReadAllText(string path);
 }
 
+/// <summary>
+/// Concrete implementation of IFileWrapper that uses System.IO for file operations.
+/// </summary>
 internal class FileWrapper : IFileWrapper
 {
     public void WriteAllText(string path, string content) => File.WriteAllText(path, content);

@@ -3,11 +3,20 @@ using System.Reflection;
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Provides methods to manage battles, including selecting Pokémon and teams with strategies.
+/// </summary>
 internal class BattleManager
 {
     private static readonly string _consolePrefix = "BattleManager> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
 
+    /// <summary>
+    /// Allows the user to select a Pokémon from a list of available Pokémon and assign an AI strategy to it.
+    /// </summary>
+    /// <param name="available">List of available Pokémon.</param>
+    /// <param name="label">Label for the Pokémon selection (e.g., "First", "Second").</param>
+    /// <returns>BattlePokemon instance with the selected Pokémon and assigned AI strategy, or null if selection was cancelled.</returns>
     public static BattlePokemon? SelectPokemonWithStrategy(List<Pokemon> available, string label)
     {
         _console.WriteLine($"Select {label} Pokémon:");
@@ -25,6 +34,12 @@ internal class BattleManager
         );
     }
 
+    /// <summary>
+    /// Allows the user to select a Pokémon team from a list of available teams and assign AI strategies to it.
+    /// </summary>
+    /// <param name="available">List of available Pokémon teams.</param>
+    /// <param name="label">Label for the team selection (e.g., "First", "Second").</param>
+    /// <returns>BattlePokemonTeam instance with the selected team and assigned AI strategies, or null if selection was cancelled.</returns>
     public static BattlePokemonTeam? SelectTeamWithStrategies(List<PokemonTeam> available, string label)
     {
         _console.WriteLine($"Select {label} Team:");

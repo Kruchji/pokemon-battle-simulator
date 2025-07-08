@@ -2,6 +2,9 @@
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Provides methods to calculate damage in a Pokemon battle.
+/// </summary>
 internal static class DamageCalculator
 {
     private static readonly double _criticalHitChance = 1 / 24; // about 4.17% (Gen VII onwards)
@@ -10,6 +13,14 @@ internal static class DamageCalculator
 
     private static readonly Random _randomGenerator = new Random();
 
+    /// <summary>
+    /// Calculates the damage dealt by an attacker to a defender using a specific move.
+    /// </summary>
+    /// <param name="attacker">Attacker Pokemon.</param>
+    /// <param name="defender">Defender Pokemon.</param>
+    /// <param name="move">Move used by the attacker.</param>
+    /// <returns>Damage dealt to the defender.</returns>
+    /// <exception cref="ArgumentNullException">Attacker, defender, or move is null.</exception>
     public static int CalculateDamage(Pokemon attacker, Pokemon defender, Move move)
     {
         if (attacker == null) throw new ArgumentNullException(nameof(attacker), "Attacker cannot be null.");

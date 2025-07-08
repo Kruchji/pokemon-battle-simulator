@@ -2,6 +2,9 @@
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Represents a defined Pokemon move.
+/// </summary>
 internal record Move
 {
     public string Name { get; private set; }

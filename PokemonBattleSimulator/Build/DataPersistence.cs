@@ -3,6 +3,9 @@ using System.Text.Json;
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Handles serialization and deserialization of user data to and from a JSON file.
+/// </summary>
 internal class DataPersistence
 {
     private static readonly string _consolePrefix = "DataPersistence> ";
@@ -11,16 +14,26 @@ internal class DataPersistence
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
     private readonly IFileWrapper _fileWrapper;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataPersistence"/> class.
+    /// </summary>
+    /// <param name="fileWrapper">File wrapper for file operations.</param>
+    /// <exception cref="ArgumentNullException">File wrapper is null.</exception>
     public DataPersistence(IFileWrapper fileWrapper)
     {
         _fileWrapper = fileWrapper ?? throw new ArgumentNullException(nameof(fileWrapper));
     }
 
+    /// <summary>
+    /// Serializes the user data to a JSON file.
+    /// </summary>
+    /// <param name="user">User object containing data to serialize.</param>
     public void SerializeUserData(User user)
     {
         _console.WriteLine($"Saving user data to '{_userDataFile}'...");
         string json = JsonSerializer.Serialize(user, _jsonSerializerOptions);
 
+        // Try to write the serialized JSON to the file
         try
         {
             _fileWrapper.WriteAllText(_userDataFile, json);
@@ -37,6 +50,10 @@ internal class DataPersistence
 
     }
 
+    /// <summary>
+    /// Deserializes user data from a JSON file into the provided User object.
+    /// </summary>
+    /// <param name="user">User object to populate with data from the file.</param>
     public void DeserializeUserData(User user)
     {
         if (_fileWrapper.Exists(_userDataFile))
@@ -60,6 +77,7 @@ internal class DataPersistence
                 return;
             }
 
+            // Try to deserialize the JSON data into a User object
             User deserializedUser;
             try
             {
@@ -71,6 +89,7 @@ internal class DataPersistence
                 return;
             }
 
+            // Copy the deserialized data into the provided User object
             if (deserializedUser != null)
             {
                 user.CopyFrom(deserializedUser);

@@ -2,6 +2,9 @@
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Main controller for the Pokemon Battle Simulator application. Routes user to the battle or build menus based on user input.
+/// </summary>
 internal sealed class MainController : IController
 {
     private static readonly string _consolePrefix = "MainMenu> ";

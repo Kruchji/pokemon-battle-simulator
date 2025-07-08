@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Enables users to start battles between Pokemon or Pokemon Teams through a console interface.
+/// </summary>
 internal sealed class BattleController : IController
 {
     private static readonly string _consolePrefix = "BattleMenu> ";

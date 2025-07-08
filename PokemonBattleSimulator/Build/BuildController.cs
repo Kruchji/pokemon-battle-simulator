@@ -3,6 +3,9 @@ using System.Text.Json;
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Enables users to create and manage Pokemon, Moves, and Teams through a console interface.
+/// </summary>
 internal sealed class BuildController : IController
 {
     private static readonly string _consolePrefix = "BuildMenu> ";

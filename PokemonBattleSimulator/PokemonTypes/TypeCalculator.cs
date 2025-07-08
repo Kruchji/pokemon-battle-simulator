@@ -2,10 +2,14 @@
 
 namespace PokemonBattleSimulator;
 
-// Store type table and have methods to calculate effectiveness
+/// <summary>
+/// Calculates the effectiveness of moves based on Pokemon types using a type chart.
+/// </summary>
 internal static class TypeCalculator
 {
-    // Stores effectiveness of types (Attacker, Defender)
+    /// <summary>
+    /// Type effectiveness chart where rows represent the attacking type and columns represent the defending type.
+    /// </summary>
     private static readonly double[,] _typeChart;
 
     private static readonly int _numTypes = Enum.GetValues(typeof(PokemonType)).Length;
@@ -15,6 +19,9 @@ internal static class TypeCalculator
     private static readonly double _superEffective = 2; // Super effective
     private static readonly double _noEffect = 0; // No effect
 
+    /// <summary>
+    /// Static constructor to initialize the type effectiveness chart.
+    /// </summary>
     static TypeCalculator()
     {
         // Initialize the type chart with effectiveness values
@@ -139,6 +146,13 @@ internal static class TypeCalculator
 
     }
 
+    /// <summary>
+    /// Sets the type chart values for a specific attacker type against multiple defender types.
+    /// </summary>
+    /// <param name="attackerType">The type of the attacking Pokemon.</param>
+    /// <param name="superEffective">Types that the attacker is super effective against.</param>
+    /// <param name="notVeryEffective">Types that the attacker is not very effective against.</param>
+    /// <param name="noEffect">Types that the attacker has no effect against.</param>
     private static void SetTypeChartValues(PokemonType attackerType, PokemonType[] superEffective, PokemonType[] notVeryEffective, PokemonType[] noEffect)
     {
         foreach (var type in superEffective)
@@ -155,6 +169,13 @@ internal static class TypeCalculator
         }
     }
 
+    /// <summary>
+    /// Calculates the effectiveness of a move used by an attacker against a defender Pokemon.
+    /// </summary>
+    /// <param name="attackerMove">Move used by the attacker.</param>
+    /// <param name="defender">Defender Pokemon.</param>
+    /// <returns>Effectiveness multiplier for the move against the defender.</returns>
+    /// <exception cref="ArgumentNullException">Attacker move or defender Pokemon is null.</exception>
     public static double GetMoveEffectiveness(Move attackerMove, Pokemon defender)
     {
         if (attackerMove == null) throw new ArgumentNullException(nameof(attackerMove), "Attacker move cannot be null.");
