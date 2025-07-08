@@ -6,9 +6,11 @@ All project files are located in the `PokemonBattleSimulator` directory and test
 
 ## Documentation
 
-Documentation is located in the `docs` folder. To generate the `docfx` documentation, run the following command in the `docs` directory:
+Documentation is located in the [docs](docs) folder. To generate the `docfx` documentation, run the following command in the [docs](docs) directory:
 ```bash
 docfx docfx.json --serve
 ```
 
-PDF version of the documentation can also be found in the `docs/user-documentation` and `docs/dev-documentation` directories respectively.
+This will generate both the user and developer (+ API) documentation and serve it on `http://localhost:8080`.
+
+PDF version of the user and developer documentation can also be found in the [docs/documentation-pdf](docs/user-documentation/documentation.pdf) directory.

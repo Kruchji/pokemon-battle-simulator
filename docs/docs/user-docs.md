@@ -28,7 +28,7 @@ When listing Moves, Pokémon or Teams, you will be presented with a paginated li
 
 When creating a new Move, Pokémon, or Team, you will be prompted to enter the required information. For Moves, this includes name, type, category, power, accuracy, and PP. For Pokémon, this includes name, first and second type, level, stats (HP, Attack, Defense, Special Attack, Special Defense, Speed), and moves. For Teams, you will need to provide a name and list pick Pokémon. Enter the information either directly or select from a paginated list. You may at any point type `abort` to cancel the creation process.
 
-Saving and loading will store all data in a `user.json` stored in the same directory as the simulator executable. This file will be created if it does not exist, and will be overwritten if it does.
+Saving and loading will store all data in a `user.json` stored in the same directory as the simulator executable. This file will be created if it does not exist and will be overwritten if it does.
 
 ### Battle Menu
 
@@ -39,6 +39,6 @@ Valid commands in the battle menu:
 - `battle`, `battleT` - Start a battle between two Pokémon or Teams respectively.
 - `battleMany`, `battleTMany` - Start multiple battles between Pokémon or Teams respectively.
 
-Starting a battle will prompt you to select the two Pokémon or teams you want to battle. You will also be able to select the Pokémon and Team strategies. After that a the whole battle will be simulated and all actions taken will be printed out. After the battle, you will be taken back to the battle menu.
+Starting a battle will prompt you to select the two Pokémon or teams you want to battle. You will also be able to select the Pokémon and Team strategies. After that a whole battle will be simulated and all actions taken will be printed out. After the battle, you will be taken back to the battle menu.
 
 When starting multiple battles, you will be prompted to select the Pokémon or Teams you want to battle. You can also select the number of battles to run. After all battles are completed, a summary of the results will be displayed. This way you can quickly determine which Pokémon or Team is better over many battles.
