@@ -25,7 +25,7 @@ internal class DataPersistence
     }
 
     /// <summary>
-    /// Serializes the user data to a JSON file.
+    /// Serializes the user data to a user.json file.
     /// </summary>
     /// <param name="user">User object containing data to serialize.</param>
     public void SerializeUserData(User user)
@@ -51,7 +51,7 @@ internal class DataPersistence
     }
 
     /// <summary>
-    /// Deserializes user data from a JSON file into the provided User object.
+    /// Deserializes user data from a user.json file into the provided User object.
     /// </summary>
     /// <param name="user">User object to populate with data from the file.</param>
     public void DeserializeUserData(User user)
