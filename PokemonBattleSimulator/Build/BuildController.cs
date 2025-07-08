@@ -12,6 +12,10 @@ internal sealed class BuildController : IController
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     private static readonly DataPersistence _dataPersistence = new DataPersistence(new FileWrapper());
 
+    /// <summary>
+    /// Runs the build menu, allowing users to create and manage their Pokemon, Moves, and Teams.
+    /// </summary>
+    /// <param name="user">User object containing the user's data.</param>
     public void Run(User user)
     {
         Console.WriteLine();

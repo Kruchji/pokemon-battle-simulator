@@ -7,8 +7,22 @@ namespace PokemonBattleSimulator;
 /// </summary>
 internal interface IPrefixedConsole
 {
+    /// <summary>
+    /// Writes a line to the console with the specified prefix.
+    /// </summary>
+    /// <param name="message">Message to write.</param>
     void WriteLine(string message);
+
+    /// <summary>
+    /// Writes a message to the console with the specified prefix without a newline.
+    /// </summary>
+    /// <param name="message">Message to write.</param>
     void Write(string message);
+
+    /// <summary>
+    /// Reads a line from the console, prompting with the specified prefix.
+    /// </summary>
+    /// <returns>A string containing the line read from the console, or null if input ended.</returns>
     string? ReadLine();
 }
 
@@ -19,6 +33,10 @@ internal class PrefixedConsole : IPrefixedConsole
 {
     private readonly string _prefix;    // From controller context
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PrefixedConsole"/> class with a specified prefix.
+    /// </summary>
+    /// <param name="prefix">Prefix to prepend to all console messages.</param>
     public PrefixedConsole(string prefix)
     {
         _prefix = prefix;

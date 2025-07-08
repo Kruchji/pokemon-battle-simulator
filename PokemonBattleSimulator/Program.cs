@@ -1,5 +1,8 @@
 ﻿namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Entry point for the Pokemon Battle Simulator application.
+/// </summary>
 internal static class Program
 {
     static void Main(string[] args)

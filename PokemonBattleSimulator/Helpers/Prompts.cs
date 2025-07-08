@@ -11,7 +11,13 @@ internal static class Prompts
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     public static readonly string AbortCommand = "abort";
 
-    // For general validation
+    /// <summary>
+    /// Prompts the user for input until a valid response is provided based on the given validator function.
+    /// </summary>
+    /// <param name="prompt">Prompt message to display to the user.</param>
+    /// <param name="validator">Validation function that takes the input string and returns true if valid, false otherwise.</param>
+    /// <param name="errorMessage">Error message to display if the input is invalid.</param>
+    /// <returns>Validated input string or null if the user chooses to abort.</returns>
     public static string PromptUntilValid(string prompt, Func<string, bool> validator, string errorMessage)
     {
         while (true)
@@ -24,7 +30,13 @@ internal static class Prompts
         }
     }
 
-    // For int validation and parsing
+    /// <summary>
+    /// Prompts the user for an integer input until a valid integer is provided or the user chooses to abort.
+    /// </summary>
+    /// <param name="prompt">Prompt message to display to the user.</param>
+    /// <param name="parser">Parser function that takes the input string and returns a tuple indicating success and the parsed integer value.</param>
+    /// <param name="errorMessage">Error message to display if the input is invalid.</param>
+    /// <returns>Parsed integer value or null if the user chooses to abort.</returns>
     public static int? PromptUntilValidInt(string prompt, Func<string, (bool success, int value)> parser, string errorMessage)
     {
         while (true)
@@ -38,7 +50,12 @@ internal static class Prompts
         }
     }
 
-    // For enum validation and parsing
+    /// <summary>
+    /// Prompts the user to select an enum value from a list of available options.
+    /// </summary>
+    /// <typeparam name="T">Enum type to prompt for.</typeparam>
+    /// <param name="prompt">Prompt message to display to the user.</param>
+    /// <returns>Parsed enum value or null if the user chooses to abort.</returns>
     public static T? PromptEnum<T>(string prompt) where T : struct, Enum
     {
         while (true)
@@ -52,7 +69,12 @@ internal static class Prompts
         }
     }
 
-    // Prompt for enum with optional skip
+    /// <summary>
+    /// Prompts the user to select an enum value from a list of available options, allowing for an optional empty selection (skip).
+    /// </summary>
+    /// <typeparam name="T">Enum type to prompt for.</typeparam>
+    /// <param name="prompt">Prompt message to display to the user.</param>
+    /// <returns>Tuple containing the selected enum value (or null if empty) and a boolean indicating if the selection was empty.</returns>
     public static (T?, bool empty) PromptEnumOptional<T>(string prompt) where T : struct, Enum
     {
         while (true)
@@ -67,6 +89,11 @@ internal static class Prompts
         }
     }
 
+    /// <summary>
+    /// Prompts the user to select moves from their available moves list, allowing for pagination and selection of multiple moves.
+    /// </summary>
+    /// <param name="user">User object containing the moves to select from.</param>
+    /// <returns>List of selected moves or null if the user chooses to abort.</returns>
     public static List<Move>? PromptMoveSelection(User user)
     {
         var moves = user.Moves;
@@ -148,7 +175,11 @@ internal static class Prompts
         return selected;
     }
 
-
+    /// <summary>
+    /// Prompts the user to select Pokémon from their available Pokémon list, allowing for pagination and selection of multiple Pokémon.
+    /// </summary>
+    /// <param name="user">User object containing the Pokémon to select from.</param>
+    /// <returns>List of selected Pokémon or null if the user chooses to abort.</returns>
     public static List<Pokemon>? PromptPokemonSelection(User user)
     {
         var pokemons = user.PokemonList;

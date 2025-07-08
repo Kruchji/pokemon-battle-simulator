@@ -4,11 +4,22 @@ using System.Threading.Tasks;
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Contains methods for simulating battles between Pokemon, including single and team battles.
+/// </summary>
 internal static class Battle
 {
     public static readonly string ConsolePrefix = "Battle> ";   // Used in Battle Controller
     private static readonly Random _randomGenerator = new Random();
 
+    /// <summary>
+    /// Simulates one turn of battle between two Pokemon.
+    /// </summary>
+    /// <param name="firstPokemon">First Pokemon in the battle.</param>
+    /// <param name="secondPokemon">Second Pokemon in the battle.</param>
+    /// <param name="prefConsole">Prefixed console for output, can be null.</param>
+    /// <returns>Result of the turn.</returns>
+    /// <exception cref="ArgumentNullException">Any of the Pokemon is null.</exception>
     public static TurnResult SimulateOneTurn(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? prefConsole = null)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
@@ -81,6 +92,16 @@ internal static class Battle
         return TurnResult.BattleOngoing; // Both Pokemon are still standing
     }
 
+
+    /// <summary>
+    /// Simulates a battle between two Pokemon until one of them faints.
+    /// </summary>
+    /// <param name="firstPokemon">First Pokemon in the battle.</param>
+    /// <param name="secondPokemon">Second Pokemon in the battle.</param>
+    /// <param name="prefConsole">Prefixed console for output, can be null.</param>
+    /// <returns>Result of the battle.</returns>
+    /// <exception cref="ArgumentNullException">Any of the Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">Both Pokemon fainted at the same time.</exception>
     public static BattleResult SimulateBattle(BattlePokemon firstPokemon, BattlePokemon secondPokemon, IPrefixedConsole? prefConsole = null)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
@@ -121,6 +142,16 @@ internal static class Battle
         }
     }
 
+
+    /// <summary>
+    /// Simulates multiple battles between two Pokemon in parallel and returns the number of wins for each.
+    /// </summary>
+    /// <param name="firstPokemon">First Pokemon in the battle.</param>
+    /// <param name="secondPokemon">Second Pokemon in the battle.</param>
+    /// <param name="battleCount">Number of battles to simulate.</param>
+    /// <returns>Number of wins for the first and second Pokemon.</returns>
+    /// <exception cref="ArgumentNullException">Any of the Pokemon is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Battle count is less than or equal to zero.</exception>
     public static (int, int) SimulateManyBattles(BattlePokemon firstPokemon, BattlePokemon secondPokemon, int battleCount)
     {
         if (firstPokemon == null) throw new ArgumentNullException(nameof(firstPokemon), "First Pokemon cannot be null.");
@@ -149,6 +180,15 @@ internal static class Battle
         return (firstWins, secondWins);
     }
 
+    /// <summary>
+    /// Simulates a team battle between two teams of Pokemon.
+    /// </summary>
+    /// <param name="firstTeam">First team of Pokemon.</param>
+    /// <param name="secondTeam">Second team of Pokemon.</param>
+    /// <param name="prefConsole">Prefixed console for output, can be null.</param>
+    /// <returns>Result of the team battle.</returns>
+    /// <exception cref="ArgumentNullException">Any of the teams is null.</exception>
+    /// <exception cref="InvalidOperationException">Both teams have no valid Pokemon.</exception>
     public static BattleResult SimulateTeamBattle(BattlePokemonTeam firstTeam, BattlePokemonTeam secondTeam, IPrefixedConsole? prefConsole = null)
     {
         if (firstTeam == null) throw new ArgumentNullException(nameof(firstTeam), "First team cannot be null.");
@@ -214,6 +254,16 @@ internal static class Battle
         }
     }
 
+
+    /// <summary>
+    /// Simulates multiple team battles between two teams of Pokemon in parallel and returns the number of wins for each team.
+    /// </summary>
+    /// <param name="firstTeam">First team of Pokemon.</param>
+    /// <param name="secondTeam">Second team of Pokemon.</param>
+    /// <param name="battleCount">Number of battles to simulate.</param>
+    /// <returns>Number of wins for the first and second team.</returns>
+    /// <exception cref="ArgumentNullException">Any of the teams is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Battle count is less than or equal to zero.</exception>
     public static (int, int) SimulateManyTeamBattles(BattlePokemonTeam firstTeam, BattlePokemonTeam secondTeam, int battleCount)
     {
         if (firstTeam == null) throw new ArgumentNullException(nameof(firstTeam), "First team cannot be null.");

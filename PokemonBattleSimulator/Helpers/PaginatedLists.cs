@@ -2,13 +2,21 @@
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Provides methods for displaying paginated lists in the console application.
+/// </summary>
 internal static class PaginatedLists
 {
     private static readonly string _consolePrefix = "PaginatedList> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     public static readonly int PageSize = 10; // Number of items per page
 
-    // List with selection of one item
+    /// <summary>
+    /// Displays a paginated list of items and allows the user to select one item by number.
+    /// </summary>
+    /// <param name="items">List of items to display.</param>
+    /// <param name="title">Title of the list for display purposes.</param>
+    /// <returns>Number of the selected item, or null if cancelled.</returns>
     public static int? PaginatedListWithSelection(List<string> items, string title)
     {
         if (items.Count == 0)
@@ -55,7 +63,12 @@ internal static class PaginatedLists
         }
     }
 
-    // List with deletion of items
+    /// <summary>
+    /// Displays a paginated list of items with an option to delete items by number.
+    /// </summary>
+    /// <param name="items">List of items to display.</param>
+    /// <param name="title">Title of the list for display purposes.</param>
+    /// <param name="onDelete">Action to call when an item is deleted, receiving the index of the item in the original list.</param>
     public static void PaginatedListWithDeletion(List<string> items, string title, Action<int>? onDelete = null)
     {
         if (items.Count == 0)

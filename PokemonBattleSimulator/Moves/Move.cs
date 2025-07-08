@@ -14,6 +14,15 @@ internal record Move
     public int PP { get; private set; }
     public MoveCategory Category { get; private set; }
 
+    /// <summary>
+    /// Initializes a new instance of the Move class with specified parameters.
+    /// </summary>
+    /// <param name="name">Name of the move.</param>
+    /// <param name="power">Power of the move.</param>
+    /// <param name="accuracy">Accuracy of the move.</param>
+    /// <param name="pp">PP (Power Points) of the move.</param>
+    /// <param name="moveType">Type of the move (e.g., Fire, Water).</param>
+    /// <param name="category">Category of the move (e.g., Physical, Special).</param>
     public Move(string name, int power, int accuracy, int pp, PokemonType moveType, MoveCategory category)
     {
         Name = name;

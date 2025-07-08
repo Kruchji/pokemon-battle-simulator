@@ -2,12 +2,27 @@
 
 namespace PokemonBattleSimulator;
 
-// Returns BattlePokemon to send out
+/// <summary>
+/// Delegate representing a strategy for selecting a BattlePokemon to send out from own team based on the opponent's BattlePokemon.
+/// </summary>
+/// <param name="ownPokemonTeam">BattlePokemonTeam representing own team of Pokemon.</param>
+/// <param name="opponentPokemon">BattlePokemon representing the opponent's Pokemon.</param>
+/// <returns>BattlePokemon selected from own team.</returns>
 internal delegate BattlePokemon AITeamStrategy(BattlePokemonTeam ownPokemonTeam, BattlePokemon opponentPokemon);
 
+/// <summary>
+/// Provides various strategies for selecting a BattlePokemon from own team in a Pokemon battle.
+/// </summary>
 internal static class AITeamStrategies
 {
-    // Strategy that always picks the next valid BattlePokemon
+    /// <summary>
+    /// Always returns the first valid BattlePokemon from own team that is not fainted.
+    /// </summary>
+    /// <param name="ownPokemonTeam">BattlePokemonTeam representing own team of Pokemon.</param>
+    /// <param name="opponentPokemon">BattlePokemon representing the opponent's Pokemon.</param>
+    /// <returns>BattlePokemon that is the first valid Pokemon in own team.</returns>
+    /// <exception cref="ArgumentNullException">Pokemon team or opponent Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid Pokemon available in the team.</exception>
     public static BattlePokemon AlwaysFirstValidPokemon(BattlePokemonTeam ownPokemonTeam, BattlePokemon opponentPokemon)
     {
         if (ownPokemonTeam == null) throw new ArgumentNullException(nameof(ownPokemonTeam), "Own Pokemon team cannot be null.");
@@ -25,7 +40,14 @@ internal static class AITeamStrategies
         throw new InvalidOperationException("No valid Pokemon available in the team.");
     }
 
-    // Random available BattlePokemon (not fainted)
+    /// <summary>
+    /// Selects a random available BattlePokemon from own team that is not fainted.
+    /// </summary>
+    /// <param name="ownPokemonTeam">BattlePokemonTeam representing own team of Pokemon.</param>
+    /// <param name="opponentPokemon">BattlePokemon representing the opponent's Pokemon.</param>
+    /// <returns>BattlePokemon that is randomly selected from own team.</returns>
+    /// <exception cref="ArgumentNullException">Pokemon team or opponent Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid Pokemon available in the team.</exception>
     public static BattlePokemon RandomAvailablePokemon(BattlePokemonTeam ownPokemonTeam, BattlePokemon opponentPokemon)
     {
         if (ownPokemonTeam == null) throw new ArgumentNullException(nameof(ownPokemonTeam), "Own Pokemon team cannot be null.");
@@ -42,6 +64,15 @@ internal static class AITeamStrategies
     }
 
     // Get Pokemon that uses the most effective move against the opponent
+
+    /// <summary>
+    /// Selects the BattlePokemon from own team that has the best overall move against the opponent's Pokemon.
+    /// </summary>
+    /// <param name="ownPokemonTeam">BattlePokemonTeam representing own team of Pokemon.</param>
+    /// <param name="opponentPokemon">BattlePokemon representing the opponent's Pokemon.</param>
+    /// <returns>BattlePokemon that has the best overall move against the opponent.</returns>
+    /// <exception cref="ArgumentNullException">Pokemon team or opponent Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid Pokemon available in the team.</exception>
     public static BattlePokemon BestOverallMovePokemon(BattlePokemonTeam ownPokemonTeam, BattlePokemon opponentPokemon)
     {
         if (ownPokemonTeam == null) throw new ArgumentNullException(nameof(ownPokemonTeam), "Own Pokemon team cannot be null.");

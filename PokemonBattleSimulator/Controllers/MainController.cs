@@ -10,6 +10,11 @@ internal sealed class MainController : IController
     private static readonly string _consolePrefix = "MainMenu> ";
     private readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     private bool _firstRun = true;
+
+    /// <summary>
+    /// Runs the main menu of the simulator, allowing user to go to build or battle menus, or exit the application.
+    /// </summary>
+    /// <param name="user">User object passed to other controllers for managing Pokemon, etc.</param>
     public void Run(User user)
     {
         if (!_firstRun)

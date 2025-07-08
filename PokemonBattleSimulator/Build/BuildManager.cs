@@ -2,11 +2,18 @@
 
 namespace PokemonBattleSimulator;
 
+/// <summary>
+/// Provides methods used in build phase for creating Pokemon, Moves, and Teams.
+/// </summary>
 internal static class BuildManager
 {
     private static readonly string _consolePrefix = "BuildManager> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
 
+    /// <summary>
+    /// Creates a new Pokemon move based on user input and adds it to the user's move collection.
+    /// </summary>
+    /// <param name="user">User object to which the new move will be added.</param>
     public static void CreateMove(User user)
     {
         _console.WriteLine("Let's create a new Pokemon move.");
@@ -37,6 +44,10 @@ internal static class BuildManager
         _console.WriteLine($"Move '{name}' created successfully!\n");
     }
 
+    /// <summary>
+    /// Creates a new Pokemon based on user input and adds it to the user's Pokemon collection.
+    /// </summary>
+    /// <param name="user">User object to which the new Pokemon will be added.</param>
     public static void CreatePokemon(User user)
     {
         // Guides user to enter all details and constructs a new Pokemon
@@ -108,6 +119,10 @@ internal static class BuildManager
         _console.WriteLine($"Pokémon '{name}' created successfully!\n");
     }
 
+    /// <summary>
+    /// Creates a new Pokémon team based on user input and adds it to the user's team collection.
+    /// </summary>
+    /// <param name="user">User object to which the new team will be added.</param>
     public static void CreatePokemonTeam(User user)
     {
         // Guides user to create a new Pokémon team
@@ -140,6 +155,10 @@ internal static class BuildManager
         _console.WriteLine($"Pokémon team '{teamName}' created successfully!\n");
     }
 
+    /// <summary>
+    /// Loads default Pokemon, Moves, and Teams into the user's data.
+    /// </summary>
+    /// <param name="user">User object whose data to overwrite with defaults.</param>
     public static void LoadDefaults(User user)
     {
         user.ClearAllData();

@@ -2,13 +2,27 @@
 
 namespace PokemonBattleSimulator;
 
-// Returns Move to use
+/// <summary>
+/// Delegate representing an AI strategy for selecting a move in a battle (to use against opponent).
+/// </summary>
+/// <param name="ownPokemon">BattlePokemon representing the AI's own Pokemon.</param>
+/// <param name="opponentPokemon">Opponent's BattlePokemon.</param>
+/// <returns>BattleMove selected by the AI.</returns>
 internal delegate BattleMove AIStrategy(BattlePokemon ownPokemon, BattlePokemon opponentPokemon);
 
-
+/// <summary>
+/// Provides various AI strategies for selecting moves in a Pokemon battle.
+/// </summary>
 internal static class AIStrategies
 {
-    // Strategy that always returns the first move
+    /// <summary>
+    /// Always returns the first valid move of own Pokemon that has PP left.
+    /// </summary>
+    /// <param name="ownPokemon">BattlePokemon representing the AI's own Pokemon.</param>
+    /// <param name="opponentPokemon">Opponent's BattlePokemon.</param>
+    /// <returns>BattleMove that is the first valid move of own Pokemon.</returns>
+    /// <exception cref="ArgumentNullException">Any Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid moves available for this Pokemon.</exception>
     public static BattleMove AlwaysFirstValidMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
@@ -24,7 +38,14 @@ internal static class AIStrategies
         throw new InvalidOperationException("No valid moves available for this Pokemon."); // Strategies are not invoked when all moves are invalid
     }
 
-    // Strategy returning a random move
+    /// <summary>
+    /// Selects a random valid move from own Pokemon's moves that has PP left.
+    /// </summary>
+    /// <param name="ownPokemon">BattlePokemon representing the AI's own Pokemon.</param>
+    /// <param name="opponentPokemon">Opponent's BattlePokemon.</param>
+    /// <returns>BattleMove selected randomly from own Pokemon's valid moves.</returns>
+    /// <exception cref="ArgumentNullException">Any Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid moves available for this Pokemon.</exception>
     public static BattleMove RandomMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
@@ -43,7 +64,14 @@ internal static class AIStrategies
         return availableMoves[randomIndex]; // Return a random valid move
     }
 
-    // Strategy returning a move based on type effectiveness (most effective move)
+    /// <summary>
+    /// Selects the most effective move against the opponent's Pokemon based on type effectiveness.
+    /// </summary>
+    /// <param name="ownPokemon">BattlePokemon representing the AI's own Pokemon.</param>
+    /// <param name="opponentPokemon">Opponent's BattlePokemon.</param>
+    /// <returns>BattleMove that is the most effective against the opponent's Pokemon.</returns>
+    /// <exception cref="ArgumentNullException">Any Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid moves available for this Pokemon.</exception>
     public static BattleMove MostEffectiveMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
@@ -73,7 +101,14 @@ internal static class AIStrategies
         return bestMove; // Return the most effective move found
     }
 
-    // Strategy returning most powerful move (highest power)
+    /// <summary>
+    /// Selects the most powerful move from own Pokemon's moves based on move power.
+    /// </summary>
+    /// <param name="ownPokemon">BattlePokemon representing the AI's own Pokemon.</param>
+    /// <param name="opponentPokemon">Opponent's BattlePokemon.</param>
+    /// <returns>BattleMove that has the highest power among own Pokemon's moves.</returns>
+    /// <exception cref="ArgumentNullException">Any Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid moves available for this Pokemon.</exception>
     public static BattleMove MostPowerfulMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
@@ -102,7 +137,14 @@ internal static class AIStrategies
         return bestMove;
     }
 
-    // Strategy returning most accurate move
+    /// <summary>
+    /// Selects the most accurate move from own Pokemon's moves based on move accuracy.
+    /// </summary>
+    /// <param name="ownPokemon">BattlePokemon representing the AI's own Pokemon.</param>
+    /// <param name="opponentPokemon">Opponent's BattlePokemon.</param>
+    /// <returns>BattleMove that has the highest accuracy among own Pokemon's moves.</returns>
+    /// <exception cref="ArgumentNullException">Any Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid moves available for this Pokemon.</exception>
     public static BattleMove MostAccurateMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");
@@ -129,7 +171,14 @@ internal static class AIStrategies
         return bestMove;
     }
 
-    // Strategy considering move effectiveness, power, and accuracy (multiplied)
+    /// <summary>
+    /// Selects the best overall move based on effectiveness, power, and accuracy.
+    /// </summary>
+    /// <param name="ownPokemon">BattlePokemon representing the AI's own Pokemon.</param>
+    /// <param name="opponentPokemon">Opponent's BattlePokemon.</param>
+    /// <returns>BattleMove that is considered the best overall move.</returns>
+    /// <exception cref="ArgumentNullException">Any Pokemon is null.</exception>
+    /// <exception cref="InvalidOperationException">No valid moves available for this Pokemon.</exception>
     public static BattleMove BestOverallMove(BattlePokemon ownPokemon, BattlePokemon opponentPokemon)
     {
         if (ownPokemon == null) throw new ArgumentNullException(nameof(ownPokemon), "Own Pokemon cannot be null.");

@@ -24,6 +24,22 @@ internal record Pokemon
     /// </summary>
     public static readonly int NumberOfMoves = 4;
     public Move[] Moves { get; private set; } = new Move[NumberOfMoves];
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Pokemon"/> class with the specified attributes and first move.
+    /// </summary>
+    /// <param name="name">Name of the Pokemon.</param>
+    /// <param name="level">Level of the Pokemon.</param>
+    /// <param name="health">Health of the Pokemon.</param>
+    /// <param name="attack">Attack stat of the Pokemon.</param>
+    /// <param name="defense">Defense stat of the Pokemon.</param>
+    /// <param name="speed">Speed stat of the Pokemon.</param>
+    /// <param name="specialAttack">Special Attack stat of the Pokemon.</param>
+    /// <param name="specialDefense">Special Defense stat of the Pokemon.</param>
+    /// <param name="firstMove">First move of the Pokemon.</param>
+    /// <param name="firstType">First type of the Pokemon (e.g., Fire, Water).</param>
+    /// <param name="secondType">Second type of the Pokemon (optional, e.g., Flying, Psychic).</param>
+    /// <exception cref="ArgumentNullException">First move is null.</exception>
     public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, Move firstMove, PokemonType firstType, PokemonType? secondType = null)
     {
         Name = name;
@@ -39,6 +55,22 @@ internal record Pokemon
         Moves[0] = firstMove ?? throw new ArgumentNullException(nameof(firstMove), "First move cannot be null.");
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Pokemon"/> class with the specified attributes and moves. Used for deserialization.
+    /// </summary>
+    /// <param name="name">Name of the Pokemon.</param>
+    /// <param name="level">Level of the Pokemon.</param>
+    /// <param name="health">Health of the Pokemon.</param>
+    /// <param name="attack">Attack stat of the Pokemon.</param>
+    /// <param name="defense">Defense stat of the Pokemon.</param>
+    /// <param name="speed">Speed stat of the Pokemon.</param>
+    /// <param name="specialAttack">Special Attack stat of the Pokemon.</param>
+    /// <param name="specialDefense">Special Defense stat of the Pokemon.</param>
+    /// <param name="moves">Moves of the Pokemon. Must contain exactly 4 moves.</param>
+    /// <param name="firstType">First type of the Pokemon (e.g., Fire, Water).</param>
+    /// <param name="secondType">Second type of the Pokemon (optional, e.g., Flying, Psychic).</param>
+    /// <exception cref="ArgumentNullException">Pokemon name or first move is null.</exception>
+    /// <exception cref="ArgumentException">Moves array does not contain exactly 4 moves.</exception>
     [JsonConstructor] // Needed for deserialization
     public Pokemon(string name, int level, int health, int attack, int defense, int speed, int specialAttack, int specialDefense, Move[] moves, PokemonType firstType, PokemonType? secondType = null)
     {

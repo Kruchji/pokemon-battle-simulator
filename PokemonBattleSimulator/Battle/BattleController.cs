@@ -11,6 +11,11 @@ internal sealed class BattleController : IController
     private static readonly string _consolePrefix = "BattleMenu> ";
     private static readonly IPrefixedConsole _console = new PrefixedConsole(_consolePrefix);
     private static readonly int _maxNumberOfBattles = 100000; // Maximum number of battles for simulation
+
+    /// <summary>
+    /// Runs the battle menu, allowing users to start battles with their Pokemon or Pokemon Teams.
+    /// </summary>
+    /// <param name="user">User object containing the user's data.</param>
     public void Run(User user)
     {
         Console.WriteLine();
