@@ -1,4 +1,4 @@
 - name: User Documentation
   href: user-docs.md
-- name: Programmer Documentation
+- name: Developer Documentation
   href: dev-docs.md
